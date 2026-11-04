@@ -1874,7 +1874,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Generate the Meow Memory soundtrack")
     parser.add_argument("--only", choices=("all", "menu", "battle", "trailer"), default="all")
     parser.add_argument("--force-tts", action="store_true")
-    parser.add_argument("--no-voice", action="store_true", help="Render the trailer without Arabic narration")
+    parser.add_argument("--with-voice", action="store_true", help="Include Arabic narration in the trailer (off by default)")
     parser.add_argument("--skip-verify", action="store_true")
     args = parser.parse_args(argv)
     SRC.mkdir(parents=True, exist_ok=True)
@@ -1894,8 +1894,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             loops = write_loop_assets("battle-theme", battle, SRC / "battle-theme.wav", bpm=BATTLE_BPM, seconds=BATTLE_SECONDS)
             stats_all["battle"].update(loops)
         if args.only in ("all", "trailer"):
-            if args.no_voice:
-                print("Skipping Arabic narration (--no-voice)...")
+            if not args.with_voice:
+                print("Rendering trailer music and sound design without narration...")
                 manifests = []
             else:
                 print("Generating Arabic narration...")

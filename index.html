@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#b9c9e2">
-  <meta name="description" content="مياو ميموري — لعبة ذاكرة أكشنية لشخصين، بطاقات فواكه، قدرات قطة، وموسيقى أصلية. هدية صغيرة… لتجربة كبيرة.">
+  <meta name="description" content="مياو ميموري — لعبة ذاكرة أكشنية لشخصين، بطاقات فواكه، قدرات قطة، وموسيقى أصلية. عالم صغير… لذكريات كبيرة.">
   <title>مياو ميموري — ذاكرة القطط</title>
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css">
@@ -28,7 +28,6 @@
     <symbol id="i-film" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M7 5v14M17 5v14M3 9h4M3 15h4M17 9h4M17 15h4"/><path d="m10.4 9.4 4.2 2.6-4.2 2.6V9.4Z" fill="currentColor" stroke="none"/></symbol>
     <symbol id="i-book" viewBox="0 0 24 24"><path d="M4.5 5.8C4.5 4.8 5.3 4 6.2 4H10c1.1 0 2 .8 2 1.8V20c0-1-.9-1.8-2-1.8H6.2c-.9 0-1.7-.8-1.7-1.8V5.8ZM19.5 5.8c0-1-.8-1.8-1.7-1.8H14c-1.1 0-2 .8-2 1.8V20c0-1 .9-1.8 2-1.8h3.8c.9 0 1.7-.8 1.7-1.8V5.8Z"/></symbol>
     <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.1"/><path d="M19.2 13.7a7.6 7.6 0 0 0 0-3.4l2-1.5-2-3.4-2.4 1a7.8 7.8 0 0 0-3-1.7L13.5 2h-3l-.4 2.7a7.8 7.8 0 0 0-3 1.7l-2.4-1-2 3.4 2 1.5a7.6 7.6 0 0 0 0 3.4l-2 1.5 2 3.4 2.4-1a7.8 7.8 0 0 0 3 1.7l.4 2.7h3l.4-2.7a7.8 7.8 0 0 0 3-1.7l2.4 1 2-3.4-2-1.5Z"/></symbol>
-    <symbol id="i-gift" viewBox="0 0 24 24"><path d="M4 10.5h16V20H4v-9.5ZM3 7h18v3.5H3V7ZM12 7v13"/><path d="M12 6.8S10.8 2.7 8.1 3.4c-2.5.7-2 3.5.3 3.7M12 6.8s1.2-4.1 3.9-3.4c2.5.7 2 3.5-.3 3.7"/></symbol>
     <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V6.2l10-2v11.3"/><circle cx="6.2" cy="18.2" r="2.8"/><circle cx="16.2" cy="15.5" r="2.8"/></symbol>
     <symbol id="i-muted" viewBox="0 0 24 24"><path d="M11 5 6.5 8.7H3v6.6h3.5L11 19V5Z" fill="currentColor" stroke="none"/><path d="m15 9 6 6M21 9l-6 6"/></symbol>
     <symbol id="i-sound" viewBox="0 0 24 24"><path d="M11 5 6.5 8.7H3v6.6h3.5L11 19V5Z" fill="currentColor" stroke="none"/><path d="M15 8.2a5.5 5.5 0 0 1 0 7.6M18 5.5a9.5 9.5 0 0 1 0 13"/></symbol>
@@ -202,17 +201,13 @@
               <span class="dock-icon"><svg class="ico"><use href="#i-book"/></svg></span>
               <span><b>دليل اللعب</b><small>قدرات وأسرار</small></span>
             </button>
-            <!-- زر الهدية: مغلق مؤقتًا وبدون أي اسم -->
-            <button class="dock-item" id="btnGiftDock" type="button" hidden aria-hidden="true" disabled>
-              <span class="dock-icon"><svg class="ico"><use href="#i-gift"/></svg></span>
-            </button>
             <button class="dock-item" id="btnWardrobeDock" data-open="wardrobe">
               <span class="dock-icon"><svg class="ico"><use href="#i-palette"/></svg></span>
               <span><b>خزانة القطط</b><small>٥ شخصيات</small></span>
             </button>
           </nav>
           <div class="menu-footline">
-            <span class="love-note">صُنعت بكل الحب لأغلى أخ <svg class="ico heart-mini"><use href="#i-heart"/></svg></span>
+            <span class="love-note">صُنعت بكل الحب <svg class="ico heart-mini"><use href="#i-heart"/></svg></span>
             <span class="now-playing" id="nowPlaying">
               <span class="np-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
               <span>همسة الفواكه <em>•</em> الموسيقى الأصلية</span>
@@ -610,32 +605,6 @@
         </div>
       </div>
 
-      <!-- gift -->
-      <div class="modal" id="modalGift" role="dialog" aria-modal="true" aria-labelledby="giftTitle">
-        <div class="modal-card gift-modal">
-          <button class="modal-close" data-close aria-label="إغلاق"><svg class="ico"><use href="#i-close"/></svg></button>
-          <div class="gift-envelope" aria-hidden="true">
-            <span class="env-flap"></span>
-            <span class="env-heart"><svg class="ico"><use href="#i-heart"/></svg></span>
-            <span class="env-seal">مياو</span>
-          </div>
-          <span class="modal-kicker"><span class="kicker-line"></span> رسالة صغيرة… بمعنى كبير</span>
-          <h2 id="giftTitle">إلى أغلى أخ في العالم</h2>
-          <div class="gift-letter">
-            <p>صنعت لك هذه اللعبة لأنك تستحق أكثر من لعبة عادية.</p>
-            <p>كل بطاقة هنا تحمل ذكرى، وكل فوز لك فرحة لي. أردت أن يكون عندنا عالم صغير نلعب فيه معًا: فواكه، قطط، موسيقى… وضحكة لا تنتهي.</p>
-            <p>سأكون دائمًا في الجانب الآخر من الشاشة… أتحداك، وأخسر أمامك بسرور.</p>
-            <p class="gift-special">هذه ليست مجرد لعبة. هذه هديتي لك.</p>
-            <p class="gift-sign">— أخوك، الذي يفتخر بك دائمًا <svg class="ico"><use href="#i-heart"/></svg></p>
-          </div>
-          <div class="gift-actions">
-            <button class="btn btn-primary" data-open="modes"><svg class="ico"><use href="#i-paw"/></svg> لنلعب معًا</button>
-            <button class="subtle-btn" data-open="trailer"><svg class="ico"><use href="#i-film"/></svg> شاهد الإعلان أولًا</button>
-          </div>
-          <div class="gift-secret"><span>✦</span> كلما لعبت… تذكر أن هناك من يبتسم الآن <span>✦</span></div>
-        </div>
-      </div>
-
       <!-- about -->
       <div class="modal" id="modalAbout" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
         <div class="modal-card about-modal">
@@ -651,9 +620,9 @@
             <div><svg class="ico"><use href="#i-film"/></svg><b>إعلان خاص</b><span>فيلم قصير مصنوع بكل التفاصيل</span></div>
           </div>
           <div class="about-tech">
-            <span>التصميم والرسم والبرمجة: أخوك</span>
+            <span>التصميم والرسم والبرمجة: فريق مياو ميموري</span>
             <span>جميع الأصوات والموسيقى: مياو ميموري</span>
-            <span>الإصدار ١.٠ • صنعت بحب لأغلى أخ</span>
+            <span>الإصدار ١.٠ • صُنعت بكل حب</span>
           </div>
           <button class="btn btn-primary" data-close>إغلاق والذهاب للعب <svg class="ico"><use href="#i-paw"/></svg></button>
         </div>

@@ -46,8 +46,7 @@
       reduceMotion: false,
       reduceMotionManual: false
     },
-    secretFound: false,
-    lastGift: 0
+    secretFound: false
   };
 
   function deepMerge(base, source) {
@@ -96,7 +95,7 @@
   const toastStack = $('#toastStack');
   const TOAST_ICONS = {
     star: 'i-star', paw: 'i-paw', heart: 'i-heart', bolt: 'i-bolt', eye: 'i-eye',
-    clock: 'i-clock', info: 'i-info', crown: 'i-crown', gift: 'i-gift', check: 'i-check',
+    clock: 'i-clock', info: 'i-info', crown: 'i-crown', check: 'i-check',
     lock: 'i-lock', shuffle: 'i-shuffle', sparkle: 'i-sparkle', trophy: 'i-trophy'
   };
   function toast(message, opts = {}) {
