@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160" role="img" aria-label="cherry" class="fruit fruit-cherry">
+<defs><radialGradient id="cherryG" cx=".33" cy=".25" r=".8">
+<stop stop-color="#ff8d92"/><stop offset=".55" stop-color="#e74358"/><stop offset="1" stop-color="#b62d47"/>
+</radialGradient></defs>
+<ellipse cx="80" cy="142" rx="42" ry="7" fill="#3a293b" opacity=".13"/>
+
+<path d="M58 96c5-25 17-41 36-52" fill="none" stroke="#50743a" stroke-width="6" stroke-linecap="round"/>
+<path d="M103 106c1-26-2-43-9-52" fill="none" stroke="#50743a" stroke-width="6" stroke-linecap="round"/>
+<path d="M92 40c9-10 22-13 34-9-5 12-16 19-30 17Z" fill="#72bd79" stroke="#432e45" stroke-width="4.5" stroke-linejoin="round"/>
+<circle cx="58" cy="108" r="25" fill="url(#cherryG)" stroke="#432e45" stroke-width="5.5"/>
+<circle cx="105" cy="119" r="22" fill="url(#cherryG)" stroke="#432e45" stroke-width="5.5"/>
+<ellipse cx="50" cy="99" rx="5" ry="2.8" transform="rotate(-40 50 99)" fill="#ffd3d3" opacity=".6"/>
+<ellipse cx="98" cy="111" rx="4.5" ry="2.5" transform="rotate(-40 98 111)" fill="#ffd3d3" opacity=".6"/>
+<g class="fruit-face" transform="translate(58 110) scale(0.76)" fill="none">
+  <ellipse cx="-7.5" cy="0" rx="3.6" ry="5.2" fill="#432e45"/>
+  <ellipse cx="-6.4" cy="-1.7" rx="1.15" ry="1.65" fill="#fff" opacity=".9"/>
+  <ellipse cx="7.5" cy="0" rx="3.6" ry="5.2" fill="#432e45"/>
+  <ellipse cx="8.6" cy="-1.7" rx="1.15" ry="1.65" fill="#fff" opacity=".9"/>
+  <path d="M-4.5 8 Q0 13.4 4.5 8" stroke="#432e45" stroke-width="2.9" stroke-linecap="round"/>
+  <ellipse cx="-21" cy="7" rx="6.5" ry="3.2" fill="#ff9cab" opacity=".38"/>
+  <ellipse cx="21" cy="7" rx="6.5" ry="3.2" fill="#ff9cab" opacity=".38"/>
+</g>
+
+</svg>

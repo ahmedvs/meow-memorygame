@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160" role="img" aria-label="watermelon" class="fruit fruit-watermelon">
+<defs><linearGradient id="melonG" x1=".2" y1=".1" x2=".7" y2=".95">
+<stop stop-color="#ff8991"/><stop offset=".6" stop-color="#f25f70"/><stop offset="1" stop-color="#dc435b"/>
+</linearGradient></defs>
+<ellipse cx="80" cy="142" rx="42" ry="7" fill="#3a293b" opacity=".13"/>
+
+<path d="M24 82a56 56 0 0 1 112 0L80 143Z" fill="#4eaa63" stroke="#432e45" stroke-width="6" stroke-linejoin="round"/>
+<path d="M33 82a47 47 0 0 1 94 0L80 134Z" fill="#f8f4dd"/>
+<path d="M39 82a41 41 0 0 1 82 0L80 126Z" fill="url(#melonG)"/>
+<path d="M28 82a52 52 0 0 1 104 0" fill="none" stroke="#88cf88" stroke-width="4" opacity=".8"/>
+<g fill="#4b3033">
+ <ellipse cx="57" cy="83" rx="2.6" ry="4.4" transform="rotate(-18 57 83)"/>
+ <ellipse cx="104" cy="83" rx="2.6" ry="4.4" transform="rotate(18 104 83)"/>
+ <ellipse cx="46" cy="102" rx="2.5" ry="4.3" transform="rotate(-24 46 102)"/>
+ <ellipse cx="114" cy="102" rx="2.5" ry="4.3" transform="rotate(24 114 102)"/>
+</g>
+<path d="M45 69c4 4 7 8 9 13" stroke="#ffd6d5" stroke-width="4" stroke-linecap="round" opacity=".55"/>
+<g class="fruit-face" transform="translate(80 92) scale(0.9)" fill="none">
+  <ellipse cx="-10.0" cy="0" rx="3.6" ry="5.2" fill="#432e45"/>
+  <ellipse cx="-8.9" cy="-1.7" rx="1.15" ry="1.65" fill="#fff" opacity=".9"/>
+  <ellipse cx="10.0" cy="0" rx="3.6" ry="5.2" fill="#432e45"/>
+  <ellipse cx="11.1" cy="-1.7" rx="1.15" ry="1.65" fill="#fff" opacity=".9"/>
+  <path d="M-4.5 10 Q0 15.4 4.5 10" stroke="#432e45" stroke-width="2.9" stroke-linecap="round"/>
+  <ellipse cx="-26" cy="9" rx="6.5" ry="3.2" fill="#c64f64" opacity=".38"/>
+  <ellipse cx="26" cy="9" rx="6.5" ry="3.2" fill="#c64f64" opacity=".38"/>
+</g>
+
+</svg>

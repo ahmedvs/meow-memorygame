@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160" role="img" aria-label="mango" class="fruit fruit-mango">
+<defs><radialGradient id="mangoG" cx=".35" cy=".25" r=".9">
+<stop stop-color="#ffe07a"/><stop offset=".5" stop-color="#ffc150"/><stop offset=".8" stop-color="#f8a144"/><stop offset="1" stop-color="#eb7a54"/>
+</radialGradient></defs>
+<ellipse cx="80" cy="142" rx="42" ry="7" fill="#3a293b" opacity=".13"/>
+
+<path d="M41 61c13-25 48-31 69-11 21 20 17 54-7 70-25 17-56 7-67-15-7-15-3-31 5-44Z" fill="url(#mangoG)" stroke="#432e45" stroke-width="6"/>
+<path d="M54 53c10-9 22-13 35-11" fill="none" stroke="#ffe8a1" stroke-width="6" stroke-linecap="round" opacity=".5"/>
+<path d="M98 49c5-10 13-17 24-20 0 12-4 21-13 28Z" fill="#6eb976" stroke="#432e45" stroke-width="4.5" stroke-linejoin="round"/>
+<path d="M99 43c-1-8 1-14 5-20" stroke="#58763b" stroke-width="4.5" stroke-linecap="round"/>
+<path d="M111 106c-7 11-20 18-34 18" fill="none" stroke="#e97554" stroke-width="6" stroke-linecap="round" opacity=".4"/>
+<g class="fruit-face" transform="translate(78 82) scale(1.0)" fill="none">
+  <ellipse cx="-10.5" cy="0" rx="3.6" ry="5.2" fill="#432e45"/>
+  <ellipse cx="-9.4" cy="-1.7" rx="1.15" ry="1.65" fill="#fff" opacity=".9"/>
+  <ellipse cx="10.5" cy="0" rx="3.6" ry="5.2" fill="#432e45"/>
+  <ellipse cx="11.6" cy="-1.7" rx="1.15" ry="1.65" fill="#fff" opacity=".9"/>
+  <path d="M-4.5 10 Q0 15.4 4.5 10" stroke="#432e45" stroke-width="2.9" stroke-linecap="round"/>
+  <ellipse cx="-27" cy="9" rx="6.5" ry="3.2" fill="#ff8e9d" opacity=".38"/>
+  <ellipse cx="27" cy="9" rx="6.5" ry="3.2" fill="#ff8e9d" opacity=".38"/>
+</g>
+
+</svg>

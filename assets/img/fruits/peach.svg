@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160" role="img" aria-label="peach" class="fruit fruit-peach">
+<defs><linearGradient id="peachG" x1=".2" y1=".1" x2=".8" y2=".95">
+<stop stop-color="#ffd6b8"/><stop offset=".45" stop-color="#ffb095"/><stop offset=".8" stop-color="#f48d89"/><stop offset="1" stop-color="#e97583"/>
+</linearGradient></defs>
+<ellipse cx="80" cy="142" rx="42" ry="7" fill="#3a293b" opacity=".13"/>
+
+<path d="M80 49c21-18 48-7 55 17 8 28-16 59-55 67-39-8-63-39-55-67 7-24 34-35 55-17Z" fill="url(#peachG)" stroke="#432e45" stroke-width="6"/>
+<path d="M80 49c-8 11-9 25-2 36" stroke="#dd7780" stroke-width="4" stroke-linecap="round" opacity=".6"/>
+<path d="M82 48c2-12 7-20 15-26" stroke="#6e5730" stroke-width="5" stroke-linecap="round"/>
+<path d="M94 28c14-13 31-6 35 4-10 12-27 12-38 4Z" fill="#6eb97a" stroke="#432e45" stroke-width="5" stroke-linejoin="round"/>
+<path d="M47 61c-7 10-9 23-7 34" stroke="#ffe9dc" stroke-width="7" stroke-linecap="round" opacity=".6"/>
+<g class="fruit-face" transform="translate(80 91) scale(1.0)" fill="none">
+  <ellipse cx="-11.0" cy="0" rx="3.6" ry="5.2" fill="#432e45"/>
+  <ellipse cx="-9.9" cy="-1.7" rx="1.15" ry="1.65" fill="#fff" opacity=".9"/>
+  <ellipse cx="11.0" cy="0" rx="3.6" ry="5.2" fill="#432e45"/>
+  <ellipse cx="12.1" cy="-1.7" rx="1.15" ry="1.65" fill="#fff" opacity=".9"/>
+  <path d="M-4.5 11 Q0 16.4 4.5 11" stroke="#432e45" stroke-width="2.9" stroke-linecap="round"/>
+  <ellipse cx="-28" cy="10" rx="6.5" ry="3.2" fill="#ff8e9d" opacity=".38"/>
+  <ellipse cx="28" cy="10" rx="6.5" ry="3.2" fill="#ff8e9d" opacity=".38"/>
+</g>
+
+</svg>

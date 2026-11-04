@@ -1,0 +1,19 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 960">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#2c1e2d"/><stop offset=".55" stop-color="#422d43"/><stop offset="1" stop-color="#17121c"/></linearGradient>
+    <radialGradient id="glow" cx=".5" cy=".4" r=".6"><stop stop-color="#d7ae6b" stop-opacity=".3"/><stop offset="1" stop-color="#d7ae6b" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="540" height="960" fill="url(#bg)"/><rect width="540" height="960" fill="url(#glow)"/>
+  <path d="M211 434c-51 0-92 41-92 94 0 64 43 100 111 100s111-36 111-100c0-53-41-94-92-94Z" fill="#f7dfc6" stroke="#17121c" stroke-width="7"/>
+  <path d="M149 400c-29-37-30-74-21-89 38 10 75 31 99 58 10 12 23 12 33 0 24-27 61-48 99-58 9 15 8 52-21 89 28 28 42 65 35 103-14 73-71 105-142 105S168 576 154 503c-7-38 7-75 35-103Z" fill="#f7dfc6" stroke="#17121c" stroke-width="7" stroke-linejoin="round"/>
+  <ellipse cx="225" cy="511" rx="23" ry="29" fill="#fffaf2"/><ellipse cx="315" cy="511" rx="23" ry="29" fill="#fffaf2"/>
+  <ellipse cx="225" cy="514" rx="14" ry="21" fill="#e8a943"/><ellipse cx="315" cy="514" rx="14" ry="21" fill="#e8a943"/>
+  <ellipse cx="225" cy="516" rx="6" ry="13" fill="#3c2a40"/><ellipse cx="315" cy="516" rx="6" ry="13" fill="#3c2a40"/>
+  <ellipse cx="270" cy="558" rx="11" ry="8" fill="#d97f8f"/>
+  <path d="M270 569c0 9-8 14-18 11M270 569c0 9 8 14 18 11" fill="none" stroke="#3f2d45" stroke-width="4" stroke-linecap="round"/>
+  <text x="270" y="132" text-anchor="middle" font-family="sans-serif" font-size="19" letter-spacing="9" fill="#d9c3b0" opacity=".76">MEOW MEMORY</text>
+  <text x="270" y="252" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="82" fill="#fff4e3">مياو ميموري</text>
+  <g fill="#fff4e3"><text x="270" y="765" text-anchor="middle" font-family="sans-serif" font-size="24" letter-spacing="2" opacity=".8">الإعلان السينمائي</text></g>
+  <circle cx="270" cy="848" r="35" fill="#fff3df"/><path d="M260 831l25 17-25 17Z" fill="#3b283e"/>
+  <text x="270" y="925" text-anchor="middle" font-family="sans-serif" font-size="13" letter-spacing="2" fill="#d9c3b0" opacity=".42">A LITTLE WORLD MADE WITH LOVE</text>
+</svg>

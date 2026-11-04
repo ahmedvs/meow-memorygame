@@ -1,0 +1,18 @@
+# dependencies
+node_modules/
+
+# local previews and test captures
+preview/
+
+# Python caches
+__pycache__/
+*.pyc
+
+# audio source masters / voice cache (large, not needed by the website)
+tools/audio-src/
+tools/tmp/
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+*.log

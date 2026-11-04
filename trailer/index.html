@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>مياو ميموري — الإعلان السينمائي</title>
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="trailer.css">
+</head>
+<body>
+  <svg class="sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-paw" viewBox="0 0 24 24"><g fill="currentColor"><ellipse cx="7.1" cy="6.7" rx="2.2" ry="2.8" transform="rotate(-22 7.1 6.7)"/><ellipse cx="12" cy="5.1" rx="2.2" ry="3"/><ellipse cx="16.9" cy="6.7" rx="2.2" ry="2.8" transform="rotate(22 16.9 6.7)"/><ellipse cx="20" cy="11.2" rx="2" ry="2.6" transform="rotate(44 20 11.2)"/><path d="M12 10.1c3.5 0 6.9 3.4 6.9 6.6 0 2.3-1.7 3.8-4 3.8-1.3 0-2.2-.5-2.9-.5s-1.6.5-2.9.5c-2.3 0-4-1.5-4-3.8 0-3.2 3.4-6.6 6.9-6.6Z"/></g></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6.1 5.5 12 5.5 21.5 12 21.5 12 17.9 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3.3"/><path d="M12 2.8v1.6M4.4 4.7l1 1.2M19.6 4.7l-1 1.2"/></symbol>
+    <symbol id="i-shuffle" viewBox="0 0 24 24"><path d="M3 7h3.3c4.8 0 6.6 10 11.4 10H21M17 13l4 4-4 4M3 17h3.3c1.6 0 2.9-1 4.1-2.4M14.2 8.8c.9-.9 2-1.8 3.5-1.8H21M17 3l4 4-4 4"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13.4 2.5 4.7 13H11l-1 8.5L19.6 10H13l.4-7.5Z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2.8 2.9 5.6 6.2.9-4.5 4.4 1 6.2-5.6-3-5.6 3 1-6.2-4.5-4.4 6.2-.9L12 2.8Z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.5S3.2 15.3 3.2 8.8A4.9 4.9 0 0 1 12 5.6a4.9 4.9 0 0 1 8.8 3.2c0 6.5-8.8 11.7-8.8 11.7Z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8.2 5.7c0-1.2 1.3-1.9 2.3-1.3l9.2 5.7a1.6 1.6 0 0 1 0 2.7l-9.2 6.1c-1 .7-2.3 0-2.3-1.2V5.7Z" fill="currentColor"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M2.8 20c0-3.4 2.8-6.1 6.2-6.1s6.2 2.7 6.2 6.1M16 5.2a3 3 0 0 1 0 5.8M17.5 14.4c2.3.5 3.9 2.5 3.9 5"/></symbol>
+    <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0V4ZM8 5H4v3a4 4 0 0 0 4 4M16 5h4v3a4 4 0 0 1-4 4M12 13v5M8 21h8M9 18h6"/></symbol>
+    <symbol id="i-crown" viewBox="0 0 24 24"><path d="m3 8 5 3 4-7 4 7 5-3-2 11H5L3 8Z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8.2"/><path d="M12 8.5V13l3 2M9 2h6M12 2v2.8"/></symbol>
+    <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V6.2l10-2v11.3"/><circle cx="6.2" cy="18.2" r="2.8"/><circle cx="16.2" cy="15.5" r="2.8"/></symbol>
+  </svg>
+
+  <div class="stage" id="stage">
+    <div class="scene scene-eyes" id="sc-eyes">
+      <div class="eyes-vignette"></div>
+      <div class="eyes-halo" id="eyesHalo"></div>
+      <div class="eyes-frame">
+        <div class="eye eye-left">
+          <div class="iris"><i class="pupil"></i><b class="glint glint-a"></b><b class="glint glint-b"></b></div>
+          <span class="lid"></span>
+          <span class="eye-line"></span>
+        </div>
+        <div class="eye eye-right">
+          <div class="iris"><i class="pupil"></i><b class="glint glint-a"></b><b class="glint glint-b"></b></div>
+          <span class="lid"></span>
+          <span class="eye-line"></span>
+        </div>
+      </div>
+      <div class="eyes-kicker" id="eyesKicker">عينٌ على الذكرى</div>
+      <div class="eyes-small">MEOW MEMORY</div>
+      <div class="eye-orbit orbit-a"></div>
+      <div class="eye-orbit orbit-b"></div>
+    </div>
+
+    <div class="scene scene-logo" id="sc-logo">
+      <div class="logo-bg">
+        <span class="blob blob-a"></span><span class="blob blob-b"></span><span class="blob blob-c"></span>
+      </div>
+      <div class="shockwaves" id="logoShock"></div>
+      <div class="logo-cards" id="logoCards">
+        <div class="mini-card mini-card-1"><span class="mini-paw"><svg class="ico"><use href="#i-paw"/></svg></span></div>
+        <div class="mini-card mini-card-2"><img src="../assets/img/fruits/strawberry.svg" alt=""></div>
+        <div class="mini-card mini-card-3"><span class="mini-paw"><svg class="ico"><use href="#i-paw"/></svg></span></div>
+        <div class="mini-card mini-card-4"><img src="../assets/img/fruits/grapes.svg" alt=""></div>
+      </div>
+      <div class="logo-orbit-fruit fruit-l1"><img src="../assets/img/fruits/orange.svg" alt=""></div>
+      <div class="logo-orbit-fruit fruit-l2"><img src="../assets/img/fruits/cherry.svg" alt=""></div>
+      <div class="logo-orbit-fruit fruit-l3"><img src="../assets/img/fruits/peach.svg" alt=""></div>
+      <div class="logo-orbit-fruit fruit-l4"><img src="../assets/img/fruits/watermelon.svg" alt=""></div>
+
+      <div class="brand-lockup" id="logoLockup">
+        <div class="brand-emblem" id="brandEmblem"><span data-cat="lulu"></span></div>
+        <div class="brand-kicker">MEOW &nbsp;MEMORY</div>
+        <div class="brand-word"><span class="brand-miaw">مياو</span><span class="brand-mem">ميموري</span></div>
+        <div class="brand-rule"><i></i><svg class="ico"><use href="#i-paw"/></svg><i></i></div>
+        <p class="brand-tagline">افتح البطاقة… <strong>وأطلق المخالب!</strong></p>
+        <p class="brand-sub">هدية صغيرة… لعالم كبير من الذكريات</p>
+      </div>
+      <div class="logo-foot" id="logoFoot"><span>لأغلى أخ</span><svg class="ico"><use href="#i-heart"/></svg><span>صُنعت بحب</span></div>
+      <div class="scene-caption logo-caption" id="logoCaption"></div>
+    </div>
+
+    <div class="scene scene-menu" id="sc-menu">
+      <div class="menu-visual" id="menuVisual">
+        <img src="../assets/trailer/menu.jpg" alt="واجهة مياو ميموري" class="menu-img" id="menuImg">
+      </div>
+      <div class="menu-top-wash"></div>
+      <div class="menu-bottom-wash"></div>
+      <div class="menu-label label-cat" id="menuLabel1"><span class="label-dot"></span> رفيقة تتكلّم</div>
+      <div class="menu-label label-menu" id="menuLabel2"><span class="label-dot"></span> كل تفصيلة تتحرك</div>
+      <div class="menu-label label-dock" id="menuLabel3"><span class="label-dot"></span> رحلة تبدأ بنقرة</div>
+      <div class="menu-headline" id="menuHeadline">
+        <span class="headline-kicker">واجهة مصنوعة بالحب</span>
+        <strong>عالم كامل…<br><em>صُنع ليُبهرك.</em></strong>
+      </div>
+      <div class="menu-ribbon" id="menuRibbon">من أول نظرة… حتى آخر ورقة</div>
+    </div>
+
+    <div class="scene scene-fruit" id="sc-fruit">
+      <div class="fruit-bg"></div>
+      <div class="giant-outline outline-one" id="fruitOutline1">اكتشف</div>
+      <div class="giant-outline outline-two" id="fruitOutline2">طابق</div>
+      <div class="fruit-topline" id="fruitTopline"><span class="rec-dot"></span> الجولة الأولى <small>ابدأ الذاكرة</small></div>
+      <div class="fruit-timer" id="fruitTimer">
+        <svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="27" class="t-track"></circle><circle cx="32" cy="32" r="27" class="t-prog" id="fruitTimerRing"></circle></svg>
+        <b id="fruitTimerNum">١٦</b><span>ثانية</span>
+      </div>
+      <div class="fruit-grid" id="fruitGrid">
+        <div class="fruit-card fcard-1" data-fruit-card="0">
+          <div class="fcard-inner">
+            <div class="fcard-side fcard-back"><span class="fcard-inner-ring"></span><svg class="ico"><use href="#i-paw"/></svg><i class="fcard-corner c1"></i><i class="fcard-corner c2"></i></div>
+            <div class="fcard-side fcard-face"><img src="../assets/img/fruits/strawberry.svg" alt=""><span>فراولة</span><i class="fcard-shine"></i></div>
+          </div>
+        </div>
+        <div class="fruit-card fcard-2" data-fruit-card="1">
+          <div class="fcard-inner">
+            <div class="fcard-side fcard-back"><span class="fcard-inner-ring"></span><svg class="ico"><use href="#i-paw"/></svg><i class="fcard-corner c1"></i><i class="fcard-corner c2"></i></div>
+            <div class="fcard-side fcard-face"><img src="../assets/img/fruits/strawberry.svg" alt=""><span>فراولة</span><i class="fcard-shine"></i></div>
+          </div>
+        </div>
+        <div class="fruit-card fcard-3" data-fruit-card="2">
+          <div class="fcard-inner">
+            <div class="fcard-side fcard-back"><span class="fcard-inner-ring"></span><svg class="ico"><use href="#i-paw"/></svg><i class="fcard-corner c1"></i><i class="fcard-corner c2"></i></div>
+            <div class="fcard-side fcard-face"><img src="../assets/img/fruits/watermelon.svg" alt=""><span>بطيخ</span><i class="fcard-shine"></i></div>
+          </div>
+        </div>
+        <div class="fruit-card fcard-4" data-fruit-card="3">
+          <div class="fcard-inner">
+            <div class="fcard-side fcard-back"><span class="fcard-inner-ring"></span><svg class="ico"><use href="#i-paw"/></svg><i class="fcard-corner c1"></i><i class="fcard-corner c2"></i></div>
+            <div class="fcard-side fcard-face"><img src="../assets/img/fruits/pineapple.svg" alt=""><span>أناناس</span><i class="fcard-shine"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="match-burst" id="matchBurst">
+        <span class="burst-ring b1"></span><span class="burst-ring b2"></span>
+        <strong>تطابق!</strong><small>سلسلة ×٢</small>
+      </div>
+      <div class="fruit-word word-discover" id="fruitWord1">اكتشف</div>
+      <div class="fruit-word word-speed" id="fruitWord2">كن الأسرع</div>
+      <div class="fruit-tick" id="fruitTick">البطاقة الذهبية تمنحك وقتًا… ونقاطًا أكثر</div>
+    </div>
+
+    <div class="scene scene-play" id="sc-play">
+      <div class="play-zoom" id="playZoom">
+        <img src="../assets/trailer/game-duel.jpg" alt="لعب مياو ميموري" class="play-img" id="playImg">
+      </div>
+      <div class="play-vignette"></div>
+      <div class="play-flash" id="playFlash"></div>
+      <div class="play-speedlines" id="speedLines">
+        <i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+      <div class="play-callout callout-match" id="playCallout1"><span>مطابقة!</span><b>+١٢٠</b></div>
+      <div class="play-callout callout-combo" id="playCallout2"><svg class="ico"><use href="#i-bolt"/></svg><span>سلسلة ×٣</span><small>وضع البرق</small></div>
+      <div class="play-callout callout-time" id="playCallout3"><svg class="ico"><use href="#i-clock"/></svg><span>الثواني تتسابق</span></div>
+      <div class="play-headline" id="playHeadline">مطابقة…<strong>ومغامرة</strong></div>
+      <div class="play-grain"></div>
+    </div>
+
+    <div class="scene scene-duel" id="sc-duel">
+      <div class="duel-bg"><span class="duel-half half-warm"></span><span class="duel-half half-cool"></span><div class="duel-rays"></div></div>
+      <div class="duel-kicker" id="duelKicker"><span class="kicker-dot"></span> لاعبان… نفس الجهاز</div>
+      <div class="duel-arena">
+        <div class="duel-cat lulu" id="duelLulu">
+          <span class="duel-cat-avatar" data-cat="lulu"></span>
+          <span class="duel-cat-name">لولو</span>
+          <span class="duel-cat-tag">أنت</span>
+          <span class="duel-score"><b>٥</b><small>أزواج</small></span>
+        </div>
+        <div class="duel-vs" id="duelVs"><span>VS</span><svg class="ico"><use href="#i-bolt"/></svg></div>
+        <div class="duel-cat zaatar" id="duelZaatar">
+          <span class="duel-cat-avatar" data-cat="zaatar"></span>
+          <span class="duel-cat-name">زعتر</span>
+          <span class="duel-cat-tag">المنافس</span>
+          <span class="duel-score"><b>٣</b><small>أزواج</small></span>
+        </div>
+      </div>
+      <div class="duel-copy" id="duelCopy">
+        <span class="duel-eyebrow">قلب واحد… ومواجهة واحدة</span>
+        <h2>من ستضحك <em>أخيرًا؟</em></h2>
+      </div>
+      <div class="duel-details" id="duelDetails">
+        <span><svg class="ico"><use href="#i-clock"/></svg> ١٦ ثانية للدور</span>
+        <span><svg class="ico"><use href="#i-bolt"/></svg> قدرات تقلب الطاولة</span>
+        <span><svg class="ico"><use href="#i-heart"/></svg> ضحك مضمون</span>
+      </div>
+      <div class="duel-cards" id="duelCards">
+        <div class="duel-float-card d1"><img src="../assets/img/fruits/watermelon.svg" alt=""></div>
+        <div class="duel-float-card d2"><span><svg class="ico"><use href="#i-paw"/></svg></span></div>
+        <div class="duel-float-card d3"><img src="../assets/img/fruits/strawberry.svg" alt=""></div>
+      </div>
+      <div class="duel-caption" id="duelCaption">جولة واحدة… وحكاية تتكرر كل مساء</div>
+    </div>
+
+    <div class="scene scene-powers" id="sc-powers">
+      <div class="powers-bg"><span class="power-orb orb-p1"></span><span class="power-orb orb-p2"></span><span class="power-orb orb-p3"></span></div>
+      <div class="lightning-bolts">
+        <svg class="bolt bolt-1" viewBox="0 0 200 700"><path d="M120 0 20 390l82-32-38 342 142-460-84 16L120 0Z"/></svg>
+        <svg class="bolt bolt-2" viewBox="0 0 200 700"><path d="M120 0 20 390l82-32-38 342 142-460-84 16L120 0Z"/></svg>
+        <svg class="bolt bolt-3" viewBox="0 0 200 700"><path d="M120 0 20 390l82-32-38 342 142-460-84 16L120 0Z"/></svg>
+      </div>
+      <div class="power-kicker" id="powerKicker">قدرات القطة</div>
+      <div class="power-slam is-peek" id="powerSlam">
+        <div class="power-icon"><svg class="ico"><use href="#i-eye"/></svg></div>
+        <div class="power-name">لمحة</div>
+        <div class="power-desc">اكشف أربع بطاقات… قبل أن يسبقك الخصم</div>
+      </div>
+      <div class="power-mini-cards" id="powerMiniCards">
+        <span class="p-mini p1"><svg class="ico"><use href="#i-paw"/></svg></span>
+        <span class="p-mini p2"><img src="../assets/img/fruits/lemon.svg" alt=""></span>
+        <span class="p-mini p3"><svg class="ico"><use href="#i-paw"/></svg></span>
+        <span class="p-mini p4"><img src="../assets/img/fruits/apple.svg" alt=""></span>
+      </div>
+      <div class="power-combo" id="powerCombo">
+        <span>وضع البرق</span>
+        <strong>×٥</strong>
+        <small>سلسلة بلا توقف</small>
+      </div>
+      <div class="power-caption" id="powerCaption">كل مطابقة… طاقة جديدة</div>
+      <div class="power-shock" id="powerShock"></div>
+    </div>
+
+    <div class="scene scene-features" id="sc-features">
+      <div class="feature-slides" id="featureSlides">
+        <div class="feature-slide" data-feature="0">
+          <img src="../assets/trailer/modes.jpg" alt="أوضاع اللعب">
+          <div class="feature-shade"></div>
+          <div class="feature-copy"><span>اختيار يتغيّر كل مساء</span><strong>٣ أوضاع للعب</strong></div>
+          <div class="feature-num">٠١</div>
+        </div>
+        <div class="feature-slide" data-feature="1">
+          <img src="../assets/trailer/wardrobe.jpg" alt="خزانة القطط">
+          <div class="feature-shade"></div>
+          <div class="feature-copy"><span>خمس شخصيات… خمس أمزجة</span><strong>٥ قطط</strong></div>
+          <div class="feature-num">٠٢</div>
+        </div>
+        <div class="feature-slide" data-feature="2">
+          <img src="../assets/trailer/results.jpg" alt="النتائج والنجوم">
+          <div class="feature-shade"></div>
+          <div class="feature-copy"><span>كل جولة… تكبر حكايتها</span><strong>نجوم ومكافآت</strong></div>
+          <div class="feature-num">٠٣</div>
+        </div>
+        <div class="feature-slide" data-feature="3">
+          <img src="../assets/trailer/game-arcade.jpg" alt="تحدي البرق">
+          <div class="feature-shade"></div>
+          <div class="feature-copy"><span>سبعون ثانية من الحماس</span><strong>تحدّي البرق</strong></div>
+          <div class="feature-num">٠٤</div>
+        </div>
+        <div class="feature-slide" data-feature="4">
+          <img src="../assets/trailer/game-ai.jpg" alt="تحدي زعتر">
+          <div class="feature-shade"></div>
+          <div class="feature-copy"><span>منافس يتذكر… ويبتسم</span><strong>تحدّي زعتر</strong></div>
+          <div class="feature-num">٠٥</div>
+        </div>
+        <div class="feature-slide feature-music" data-feature="5">
+          <div class="music-vinyl">
+            <div class="vinyl-ring"><svg class="ico"><use href="#i-paw"/></svg></div>
+            <div class="music-equalizer" id="musicEq"></div>
+          </div>
+          <div class="feature-copy"><span>مقطوعات صُنعت خصيصًا</span><strong>موسيقى أصلية</strong></div>
+          <div class="feature-num">٠٦</div>
+        </div>
+        <div class="feature-slide feature-collage" data-feature="6">
+          <div class="collage">
+            <img class="col-a" src="../assets/trailer/menu.jpg" alt="">
+            <img class="col-b" src="../assets/trailer/game-arcade.jpg" alt="">
+            <img class="col-c" src="../assets/trailer/results.jpg" alt="">
+            <img class="col-d" src="../assets/trailer/wardrobe.jpg" alt="">
+          </div>
+          <div class="feature-shade"></div>
+          <div class="feature-copy"><span>عالم صغير… بتفاصيل لا تنتهي</span><strong>كل شيء… لأجلك</strong></div>
+          <div class="feature-num">٠٧</div>
+        </div>
+      </div>
+      <div class="feature-topline"><span>ليس مجرد لعبة</span><span>MORE THAN A MEMORY</span></div>
+      <div class="feature-caption" id="featureCaption">عالم كامل… في راحة يدك</div>
+      <div class="feature-flash" id="featureFlash"></div>
+    </div>
+
+    <div class="scene scene-letter" id="sc-letter">
+      <div class="letter-bg"><span class="l-orb o1"></span><span class="l-orb o2"></span><span class="l-grain"></span></div>
+      <div class="petal-field" id="petalField"></div>
+      <div class="letter-paper" id="letterPaper">
+        <span class="paper-corner"></span>
+        <div class="letter-seal"><svg class="ico"><use href="#i-heart"/></svg></div>
+        <span class="letter-kicker">إلى أغلى أخ</span>
+        <h2>صنعتُ لك<br><em>عالمًا صغيرًا…</em></h2>
+        <p class="letter-body">لأن بعض الذكريات لا تكفيها بطاقة…<br>بل تستحق لعبة نلعبها معًا.</p>
+        <div class="letter-rule"><i></i><svg class="ico"><use href="#i-paw"/></svg><i></i></div>
+        <p class="letter-final" id="letterFinal">وهذه اللعبة…<br><b>هدية لأخي.</b></p>
+        <span class="letter-sign">— أخوك، الذي يفتخر بك دائمًا <svg class="ico"><use href="#i-heart"/></svg></span>
+        <p class="letter-ps" id="letterPs">ملاحظة صغيرة: مهما كبرنا… سأبقى ألعب معك.</p>
+        <span class="letter-doodle" id="letterDoodle">✦ &nbsp; ✧ &nbsp; ✦</span>
+      </div>
+      <div class="letter-mascot" id="letterMascot" data-mascot></div>
+      <div class="letter-fruit lf1"><img src="../assets/img/fruits/strawberry.svg" alt=""></div>
+      <div class="letter-fruit lf2"><img src="../assets/img/fruits/peach.svg" alt=""></div>
+      <div class="letter-fruit lf3"><img src="../assets/img/fruits/cherry.svg" alt=""></div>
+      <div class="letter-small" id="letterSmall">لعبة ذاكرة… بطعم الأكشن</div>
+    </div>
+
+    <div class="scene scene-final" id="sc-final">
+      <div class="final-bg"><span class="final-glow"></span></div>
+      <div class="final-collage" id="finalCollage">
+        <img src="../assets/trailer/game-duel.jpg" alt="" class="fc fc-a">
+        <img src="../assets/trailer/menu.jpg" alt="" class="fc fc-b">
+        <img src="../assets/trailer/results.jpg" alt="" class="fc fc-c">
+      </div>
+      <div class="final-flashlight"></div>
+      <div class="final-lockup" id="finalLockup">
+        <span class="final-kicker">MEOW MEMORY</span>
+        <div class="final-word"><span>مياو</span> <span>ميموري</span></div>
+        <p class="final-tag">لعبة ذاكرة… بقلب أكشن</p>
+      </div>
+      <div class="final-challenge" id="finalChallenge">
+        <span>هل تتحداني؟</span>
+      </div>
+      <div class="final-cat final-cat-a" data-cat="lulu"></div>
+      <div class="final-cat final-cat-b" data-cat="zaatar"></div>
+      <div class="final-play" id="finalPlay"><span class="play-dot"><svg class="ico"><use href="#i-play"/></svg></span> العبها معي الآن</div>
+      <div class="final-caption" id="finalCaption">قلبٌ صغير… وذاكرة لا تُنسى</div>
+    </div>
+
+    <div class="scene scene-end" id="sc-end">
+      <div class="end-bg"><span class="end-halo"></span><span class="end-aurora a1"></span><span class="end-aurora a2"></span><span class="end-aurora a3"></span></div>
+      <div class="end-cards">
+        <span class="end-card ec1"><svg class="ico"><use href="#i-paw"/></svg></span>
+        <span class="end-card ec2"><img src="../assets/img/fruits/strawberry.svg" alt=""></span>
+        <span class="end-card ec3"><svg class="ico"><use href="#i-paw"/></svg></span>
+        <span class="end-card ec4"><img src="../assets/img/fruits/watermelon.svg" alt=""></span>
+        <span class="end-card ec5"><svg class="ico"><use href="#i-paw"/></svg></span>
+      </div>
+      <div class="end-mark" id="endMark">
+        <div class="end-emblem" id="endEmblem"><span data-cat="lulu"></span></div>
+        <span class="end-kicker">MEOW MEMORY</span>
+        <div class="end-word"><span>مياو</span> <span>ميموري</span></div>
+        <div class="end-rule"><i></i><svg class="ico"><use href="#i-paw"/></svg><i></i></div>
+        <p class="end-line" id="endLine">لعبة ذاكرة أكشنية… لشخصين</p>
+      </div>
+      <div class="end-heart" id="endHeart"><span>هدية لأغلى أخ</span><svg class="ico"><use href="#i-heart"/></svg></div>
+      <div class="end-cta" id="endCta"><span class="cta-dot"><svg class="ico"><use href="#i-play"/></svg></span> العبها الآن</div>
+      <div class="end-love" id="endLove">صُنعت بكل الحب… لتلعب معي دائمًا</div>
+      <div class="end-fade"></div>
+    </div>
+
+    <div class="flash" id="flash"></div>
+    <div class="shake-layer" id="shakeLayer">
+      <div class="light-streaks" id="lightStreaks"><i></i><i></i><i></i></div>
+    </div>
+    <canvas class="particle-canvas" id="particleCanvas" width="1080" height="1920"></canvas>
+    <div class="grain"></div>
+    <div class="vignette"></div>
+    <div class="subtitle" id="subtitle"><span></span></div>
+    <div class="safe-marks" aria-hidden="true"><span class="mark mark-tl"></span><span class="mark mark-tr"></span><span class="mark mark-bl"></span><span class="mark mark-br"></span></div>
+  </div>
+
+  <script src="../js/art.js"></script>
+  <script src="trailer.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+﻿const { chromium } = require('playwright-core');
+(async () => {
+  const browser = await chromium.launch({ headless: true, executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe' });
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  const errors=[]; page.on('pageerror', e=>errors.push(e.message));
+  await page.goto('http://127.0.0.1:5173/?capture=1', { waitUntil: 'networkidle' });
+  await page.waitForTimeout(300);
+  await page.evaluate(() => window.MMGame.start({ mode:'duel', players:[{name:'ليلى',catId:'lulu',bot:false},{name:'أختي',catId:'zaatar',bot:false}] }, { skipCountdown:true }));
+  await page.waitForTimeout(900);
+  const map = await page.evaluate(() => { const s=window.MMGame.state; const m={}; s.deck.forEach((c,i)=>{ (m[c.fruit]=m[c.fruit]||[]).push(i); }); const f=Object.keys(m).find(f=>m[f].length===2); return {a:m[f][0], b:m[f][1], f}; });
+  await page.evaluate(a => document.querySelectorAll('.memory-card')[a].click(), map.a);
+  await page.waitForTimeout(300);
+  await page.screenshot({ path: 'preview/flip-one.png' });
+  await page.evaluate(b => document.querySelectorAll('.memory-card')[b].click(), map.b);
+  await page.waitForTimeout(500);
+  await page.screenshot({ path: 'preview/flip-match.png' });
+  await page.waitForTimeout(1600);
+  await page.screenshot({ path: 'preview/flip-cleared.png' });
+  const result = await page.evaluate(() => ({ flipped: document.querySelectorAll('.memory-card.is-flipped').length, cleared: document.querySelectorAll('.memory-card.is-cleared').length, score: window.MMGame.state.players[0].score, pairs: window.MMGame.state.players[0].pairs }));
+  console.log(JSON.stringify({map,result,errors}));
+  await browser.close();
+})();

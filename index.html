@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#b9c9e2">
+  <meta name="description" content="مياو ميموري — لعبة ذاكرة أكشنية لشخصين، بطاقات فواكه، قدرات قطة، وموسيقى أصلية. هدية صغيرة… لتجربة كبيرة.">
+  <title>مياو ميموري — ذاكرة القطط</title>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/gameplay.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <!-- ───────────────────────── shared icon library ───────────────────────── -->
+  <svg class="svg-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-paw" viewBox="0 0 24 24">
+      <g fill="currentColor">
+        <ellipse cx="7.1" cy="6.7" rx="2.2" ry="2.8" transform="rotate(-22 7.1 6.7)"/>
+        <ellipse cx="12" cy="5.1" rx="2.2" ry="3"/>
+        <ellipse cx="16.9" cy="6.7" rx="2.2" ry="2.8" transform="rotate(22 16.9 6.7)"/>
+        <ellipse cx="20" cy="11.2" rx="2" ry="2.6" transform="rotate(44 20 11.2)"/>
+        <path d="M12 10.1c3.5 0 6.9 3.4 6.9 6.6 0 2.3-1.7 3.8-4 3.8-1.3 0-2.2-.5-2.9-.5s-1.6.5-2.9.5c-2.3 0-4-1.5-4-3.8 0-3.2 3.4-6.6 6.9-6.6Z"/>
+      </g>
+    </symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8.2 5.7c0-1.2 1.3-1.9 2.3-1.3l9.2 5.7a1.6 1.6 0 0 1 0 2.7l-9.2 6.1c-1 .7-2.3 0-2.3-1.2V5.7Z" fill="currentColor"/></symbol>
+    <symbol id="i-film" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M7 5v14M17 5v14M3 9h4M3 15h4M17 9h4M17 15h4"/><path d="m10.4 9.4 4.2 2.6-4.2 2.6V9.4Z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4.5 5.8C4.5 4.8 5.3 4 6.2 4H10c1.1 0 2 .8 2 1.8V20c0-1-.9-1.8-2-1.8H6.2c-.9 0-1.7-.8-1.7-1.8V5.8ZM19.5 5.8c0-1-.8-1.8-1.7-1.8H14c-1.1 0-2 .8-2 1.8V20c0-1 .9-1.8 2-1.8h3.8c.9 0 1.7-.8 1.7-1.8V5.8Z"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.1"/><path d="M19.2 13.7a7.6 7.6 0 0 0 0-3.4l2-1.5-2-3.4-2.4 1a7.8 7.8 0 0 0-3-1.7L13.5 2h-3l-.4 2.7a7.8 7.8 0 0 0-3 1.7l-2.4-1-2 3.4 2 1.5a7.6 7.6 0 0 0 0 3.4l-2 1.5 2 3.4 2.4-1a7.8 7.8 0 0 0 3 1.7l.4 2.7h3l.4-2.7a7.8 7.8 0 0 0 3-1.7l2.4 1 2-3.4-2-1.5Z"/></symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24"><path d="M4 10.5h16V20H4v-9.5ZM3 7h18v3.5H3V7ZM12 7v13"/><path d="M12 6.8S10.8 2.7 8.1 3.4c-2.5.7-2 3.5.3 3.7M12 6.8s1.2-4.1 3.9-3.4c2.5.7 2 3.5-.3 3.7"/></symbol>
+    <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V6.2l10-2v11.3"/><circle cx="6.2" cy="18.2" r="2.8"/><circle cx="16.2" cy="15.5" r="2.8"/></symbol>
+    <symbol id="i-muted" viewBox="0 0 24 24"><path d="M11 5 6.5 8.7H3v6.6h3.5L11 19V5Z" fill="currentColor" stroke="none"/><path d="m15 9 6 6M21 9l-6 6"/></symbol>
+    <symbol id="i-sound" viewBox="0 0 24 24"><path d="M11 5 6.5 8.7H3v6.6h3.5L11 19V5Z" fill="currentColor" stroke="none"/><path d="M15 8.2a5.5 5.5 0 0 1 0 7.6M18 5.5a9.5 9.5 0 0 1 0 13"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="m9 5-7 7 7 7M2 12h20"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0V4ZM8 5H4v3a4 4 0 0 0 4 4M16 5h4v3a4 4 0 0 1-4 4M12 13v5M8 21h8M9 18h6"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2.8 2.9 5.6 6.2.9-4.5 4.4 1 6.2-5.6-3-5.6 3 1-6.2-4.5-4.4 6.2-.9L12 2.8Z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.5S3.2 15.3 3.2 8.8A4.9 4.9 0 0 1 12 5.6a4.9 4.9 0 0 1 8.8 3.2c0 6.5-8.8 11.7-8.8 11.7Z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 2.5c1 5.5 4 8.5 9.5 9.5-5.5 1-8.5 4-9.5 9.5-1-5.5-4-8.5-9.5-9.5 5.5-1 8.5-4 9.5-9.5Z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M2.8 20c0-3.4 2.8-6.1 6.2-6.1s6.2 2.7 6.2 6.1M16 5.2a3 3 0 0 1 0 5.8M17.5 14.4c2.3.5 3.9 2.5 3.9 5"/></symbol>
+    <symbol id="i-bot" viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="12" rx="4"/><path d="M12 3v4M2.5 12v4M21.5 12v4"/><circle cx="9" cy="12.5" r="1.2" fill="currentColor"/><circle cx="15" cy="12.5" r="1.2" fill="currentColor"/><path d="M9.5 16h5"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13.4 2.5 4.7 13H11l-1 8.5L19.6 10H13l.4-7.5Z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6.1 5.5 12 5.5 21.5 12 21.5 12 17.9 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3.3"/><path d="M12 2.8v1.6M4.4 4.7l1 1.2M19.6 4.7l-1 1.2"/></symbol>
+    <symbol id="i-shuffle" viewBox="0 0 24 24"><path d="M3 7h3.3c4.8 0 6.6 10 11.4 10H21M17 13l4 4-4 4M3 17h3.3c1.6 0 2.9-1 4.1-2.4M14.2 8.8c.9-.9 2-1.8 3.5-1.8H21M17 3l4 4-4 4"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8.2"/><path d="M12 8.5V13l3 2M9 2h6M12 2v2.8"/></symbol>
+    <symbol id="i-time-plus" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8.2"/><path d="M12 8.5V13l3 2M9 2h6M12 2v2.8M18.5 4l2 2M21 4l-2 2"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1.5" fill="currentColor" stroke="none"/><rect x="14" y="4" width="4" height="16" rx="1.5" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.8 12 3l9 7.8V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.2Z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5M20 12a8 8 0 1 0-2 5.4"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.5" y="10" width="15" height="11" rx="3"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10M12 14.5v2.5"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m4.5 12.5 5 5 10-10"/></symbol>
+    <symbol id="i-crown" viewBox="0 0 24 24"><path d="m3 8 5 3 4-7 4 7 5-3-2 11H5L3 8Z" fill="currentColor" stroke="none"/><path d="M6 22h12" stroke="currentColor" stroke-width="2.4"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M21 12H3M10 5l-7 7 7 7"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M3 12h18M14 5l7 7-7 7"/></symbol>
+    <symbol id="i-touch" viewBox="0 0 24 24"><path d="M9 10.5V6a2 2 0 0 1 4 0v6.5M13 10.5V4.5a2 2 0 0 1 4 0V12M17 9.5a2 2 0 0 1 4 0V15c0 4.4-3.6 8-8 8h-2.5c-2 0-3.6-1-4.7-2.7L3.1 16c-.6-1-.2-2 .7-2.4.8-.4 1.6-.1 2.2.7L9 18"/></symbol>
+    <symbol id="i-expand" viewBox="0 0 24 24"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 10.5V17M12 7v.2"/></symbol>
+    <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.5 0 2.2-1 1.6-2.2-.6-1.2.2-2.3 1.5-2.3h1.7A4.2 4.2 0 0 0 21 12.3C21 7.2 17.1 3 12 3Z"/><circle cx="7.5" cy="10" r="1.2" fill="currentColor"/><circle cx="11" cy="6.7" r="1.2" fill="currentColor"/><circle cx="15.5" cy="7.5" r="1.2" fill="currentColor"/><circle cx="17.5" cy="11.5" r="1.2" fill="currentColor"/></symbol>
+  </svg>
+
+  <div class="boot" id="boot" aria-hidden="true">
+    <div class="boot-glow"></div>
+    <div class="boot-logo">
+      <span class="boot-eyes"><i></i><i></i></span>
+      <span class="boot-word">مياو ميموري</span>
+      <span class="boot-sub">تهيّأ الذكريات…</span>
+    </div>
+    <div class="boot-line"><span></span></div>
+  </div>
+
+  <div class="app" id="app">
+    <div class="ambient" aria-hidden="true">
+      <div class="ambient-wash wash-a"></div>
+      <div class="ambient-wash wash-b"></div>
+      <div class="ambient-wash wash-c"></div>
+      <div class="ambient-sun"></div>
+      <canvas id="ambientCanvas" class="ambient-canvas"></canvas>
+      <div class="ambient-deco" id="ambientDeco"></div>
+      <div class="grain"></div>
+    </div>
+    <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+    <main class="main">
+      <!-- ═════════════════════════ MENU ═════════════════════════ -->
+      <section class="screen menu-screen is-active" id="screen-menu" aria-label="القائمة الرئيسية">
+        <header class="menu-header">
+          <button class="mini-logo" data-go="menu" aria-label="مياو ميموري">
+            <span class="mini-sigil" data-cat-avatar="lulu"></span>
+            <span class="mini-brand">مياو <b>ميموري</b></span>
+          </button>
+          <div class="header-actions">
+            <button class="profile-chip" id="btnWardrobe" aria-label="خزانة القطط">
+              <span class="profile-cat" data-cat-avatar="lulu"></span>
+              <span class="profile-stars"><svg class="ico"><use href="#i-star"/></svg><b data-stars>0</b></span>
+            </button>
+            <button class="icon-btn" id="btnGuideMenu" aria-label="دليل اللعب" data-open="guide">
+              <svg class="ico"><use href="#i-book"/></svg>
+              <span class="sr-only">دليل اللعب</span>
+            </button>
+            <button class="icon-btn music-btn" id="btnSoundMenu" aria-label="تشغيل الموسيقى أو إيقافها" data-sound-toggle>
+              <svg class="ico sound-on"><use href="#i-music"/></svg>
+              <svg class="ico sound-off"><use href="#i-muted"/></svg>
+              <span class="music-eq" aria-hidden="true"><i></i><i></i><i></i></span>
+            </button>
+            <button class="icon-btn" id="btnSettingsMenu" aria-label="الإعدادات" data-open="settings">
+              <svg class="ico"><use href="#i-settings"/></svg>
+            </button>
+          </div>
+        </header>
+
+        <div class="menu-hero">
+          <div class="hero-copy">
+            <p class="eyebrow hero-eyebrow">
+              <span class="eyebrow-dot"></span>
+              لعبة ذاكرة <b>أكشنية</b>
+              <span class="eyebrow-sep"></span>
+              لشخصين أو ضد زعتر
+            </p>
+            <div class="logo-block">
+              <span class="logo-kicker">MEOW&nbsp;MEMORY</span>
+              <h1 class="hero-logo">
+                <span class="logo-meow">مياو</span>
+                <span class="logo-memory">ميموري</span>
+                <span class="logo-spark s1">✦</span>
+                <span class="logo-spark s2">✧</span>
+              </h1>
+              <span class="logo-underline" aria-hidden="true"></span>
+            </div>
+            <p class="tagline">افتح البطاقة… <strong>وأطلق المخالب!</strong></p>
+            <p class="hero-desc">ذاكرة، سرعة، وقدرات قطة. اجمع الفواكه، أسرع بالمطابقة،<br class="desk-only"> ولا تدع زعتر يسبقك بخطوة.</p>
+            <div class="hero-cta">
+              <button class="btn btn-primary magnetic" id="btnPlayHero" data-open="modes">
+                <span class="btn-shine"></span>
+                <span class="btn-label">ابدأ اللعب</span>
+                <span class="btn-badge"><svg class="ico"><use href="#i-paw"/></svg></span>
+              </button>
+              <button class="btn btn-frost magnetic" id="btnTrailerHero" data-open="trailer">
+                <span class="play-ring"><svg class="ico"><use href="#i-play"/></svg></span>
+                <span class="btn-label">شاهد الإعلان</span>
+                <span class="btn-duration">٤٥ ث</span>
+              </button>
+            </div>
+            <div class="hero-stats">
+              <span class="stat-chip"><svg class="ico"><use href="#i-trophy"/></svg><span>أفضل نتيجة <b data-best>٠</b></span></span>
+              <span class="stat-chip"><svg class="ico"><use href="#i-star"/></svg><span>نجومك <b data-stars>٠</b></span></span>
+              <button class="text-link" data-open="guide">كيف نلعب؟ <svg class="ico"><use href="#i-arrow-left"/></svg></button>
+            </div>
+          </div>
+
+          <div class="hero-art">
+            <div class="mascot-stage" id="mascotStage">
+              <div class="stage-halo"></div>
+              <div class="stage-ring ring-one"></div>
+              <div class="stage-ring ring-two"></div>
+              <span class="stage-glint glint-a">✦</span>
+              <span class="stage-glint glint-b">✦</span>
+              <span class="stage-glint glint-c">✧</span>
+              <span class="stage-dot dot-a"></span>
+              <span class="stage-dot dot-b"></span>
+              <span class="stage-dot dot-c"></span>
+              <div class="floaty-card card-a" aria-hidden="true">
+                <span class="floaty-back"><svg class="ico"><use href="#i-paw"/></svg></span>
+                <span class="floaty-face"><img src="assets/img/fruits/watermelon.svg" alt=""></span>
+              </div>
+              <div class="floaty-card card-b" aria-hidden="true">
+                <span class="floaty-back"><svg class="ico"><use href="#i-paw"/></svg></span>
+                <span class="floaty-face"><img src="assets/img/fruits/strawberry.svg" alt=""></span>
+              </div>
+              <button class="mascot-button" id="mascotBtn" aria-label="المس لولو لتسمع صوتها">
+                <span class="mascot-inner" data-mascot></span>
+              </button>
+              <div class="speech-bubble" id="mascotSpeech" aria-live="polite">
+                <span>جاهز للتحدي؟</span>
+                <i class="speech-tail"></i>
+              </div>
+              <button class="float-fruit fruit-a" data-fruit="strawberry" aria-label="فراولة تفاعلية"><img src="assets/img/fruits/strawberry.svg" alt=""></button>
+              <button class="float-fruit fruit-b" data-fruit="orange" aria-label="برتقالة تفاعلية"><img src="assets/img/fruits/orange.svg" alt=""></button>
+              <button class="float-fruit fruit-c" data-fruit="grapes" aria-label="عنب تفاعلي"><img src="assets/img/fruits/grapes.svg" alt=""></button>
+              <button class="float-fruit fruit-d" data-fruit="banana" aria-label="موزة تفاعلية"><img src="assets/img/fruits/banana.svg" alt=""></button>
+              <button class="float-fruit fruit-e" data-fruit="cherry" aria-label="كرز تفاعلي"><img src="assets/img/fruits/cherry.svg" alt=""></button>
+            </div>
+            <div class="art-caption">
+              <span class="caption-line"></span>
+              <p><b>لولو</b> تحرس الفواكه… وأنت تحرس الذكريات.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-bottom">
+          <nav class="menu-dock" aria-label="اختصارات القائمة">
+            <button class="dock-item is-featured" data-open="modes">
+              <span class="dock-icon"><svg class="ico"><use href="#i-play"/></svg></span>
+              <span><b>العب الآن</b><small>٣ أوضاع ممتعة</small></span>
+            </button>
+            <button class="dock-item" data-open="trailer">
+              <span class="dock-icon"><svg class="ico"><use href="#i-film"/></svg></span>
+              <span><b>الإعلان</b><small>مونتاج سينمائي</small></span>
+            </button>
+            <button class="dock-item" data-open="guide">
+              <span class="dock-icon"><svg class="ico"><use href="#i-book"/></svg></span>
+              <span><b>دليل اللعب</b><small>قدرات وأسرار</small></span>
+            </button>
+            <!-- زر الهدية: مغلق مؤقتًا وبدون أي اسم -->
+            <button class="dock-item" id="btnGiftDock" type="button" hidden aria-hidden="true" disabled>
+              <span class="dock-icon"><svg class="ico"><use href="#i-gift"/></svg></span>
+            </button>
+            <button class="dock-item" id="btnWardrobeDock" data-open="wardrobe">
+              <span class="dock-icon"><svg class="ico"><use href="#i-palette"/></svg></span>
+              <span><b>خزانة القطط</b><small>٥ شخصيات</small></span>
+            </button>
+          </nav>
+          <div class="menu-footline">
+            <span class="love-note">صُنعت بكل الحب لأغلى أخ <svg class="ico heart-mini"><use href="#i-heart"/></svg></span>
+            <span class="now-playing" id="nowPlaying">
+              <span class="np-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+              <span>همسة الفواكه <em>•</em> الموسيقى الأصلية</span>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═════════════════════════ GAME ═════════════════════════ -->
+      <section class="screen game-screen" id="screen-game" aria-label="ساحة اللعب">
+        <div class="game-aura" aria-hidden="true"></div>
+        <div class="game-paw-bg" aria-hidden="true"><svg class="ico"><use href="#i-paw"/></svg></div>
+        <div class="game-shell">
+          <header class="game-top">
+            <div class="game-top-start">
+              <button class="game-icon" id="btnGamePause" aria-label="إيقاف مؤقت" title="إيقاف مؤقت">
+                <svg class="ico"><use href="#i-back"/></svg>
+              </button>
+              <button class="game-icon" id="btnGameExit" aria-label="الخروج من اللعبة" title="الخروج">
+                <svg class="ico"><use href="#i-close"/></svg>
+              </button>
+            </div>
+            <div class="game-brand" aria-label="مياو ميموري"><span class="brand-paw"><svg class="ico"><use href="#i-paw"/></svg></span> مياو <b>ميموري</b></div>
+            <div class="game-top-end">
+              <button class="game-icon" id="btnGameGuide" aria-label="دليل سريع" title="دليل سريع">
+                <svg class="ico"><use href="#i-info"/></svg>
+              </button>
+            </div>
+          </header>
+
+          <div class="hud hud-duel" id="hudDuel">
+            <article class="player-card player-one" data-player-card="0">
+              <div class="player-avatar" data-hud-avatar="0"></div>
+              <div class="player-core">
+                <div class="player-name-row">
+                  <span class="player-name" data-hud-name="0">لاعب ١</span>
+                  <span class="turn-dot" aria-hidden="true"></span>
+                </div>
+                <div class="player-numbers">
+                  <span class="pair-count"><b data-hud-pairs="0">٠</b> <em>زوج</em></span>
+                  <span class="points-count"><b data-hud-points="0">٠</b> نقطة</span>
+                </div>
+                <div class="energy" data-hud-energy="0" aria-label="طاقة القطة"></div>
+              </div>
+              <span class="player-timer-bar"><span></span></span>
+            </article>
+
+            <div class="duel-center">
+              <div class="turn-timer" id="turnTimer" aria-label="مؤقت الدور">
+                <svg class="timer-ring" viewBox="0 0 64 64" aria-hidden="true">
+                  <circle class="ring-track" cx="32" cy="32" r="27"></circle>
+                  <circle class="ring-progress" id="ringProgress" cx="32" cy="32" r="27"></circle>
+                </svg>
+                <span class="timer-value" id="turnTimerValue">١٦</span>
+                <span class="timer-label">ثانية</span>
+              </div>
+              <span class="versus-pill">VS</span>
+            </div>
+
+            <article class="player-card player-two" data-player-card="1">
+              <div class="player-avatar" data-hud-avatar="1"></div>
+              <div class="player-core">
+                <div class="player-name-row">
+                  <span class="player-name" data-hud-name="1">لاعب ٢</span>
+                  <span class="turn-dot" aria-hidden="true"></span>
+                </div>
+                <div class="player-numbers">
+                  <span class="pair-count"><b data-hud-pairs="1">٠</b> <em>زوج</em></span>
+                  <span class="points-count"><b data-hud-points="1">٠</b> نقطة</span>
+                </div>
+                <div class="energy" data-hud-energy="1" aria-label="طاقة القطة"></div>
+              </div>
+              <span class="player-timer-bar"><span></span></span>
+            </article>
+          </div>
+
+          <div class="hud hud-arcade" id="hudArcade" hidden>
+            <div class="arcade-player">
+              <div class="player-avatar" data-hud-avatar="0"></div>
+              <div>
+                <span class="arcade-label">قطة الغابة</span>
+                <strong data-hud-name="0">لولو</strong>
+              </div>
+            </div>
+            <div class="arcade-clock" id="arcadeClock">
+              <span class="clock-label">الوقت</span>
+              <b id="arcadeTimeValue">٧٠</b>
+              <span class="clock-unit">ثانية</span>
+              <div class="clock-track"><span id="arcadeTimeBar"></span></div>
+            </div>
+            <div class="arcade-score">
+              <span class="arcade-label">النقاط</span>
+              <b id="arcadeScoreValue">٠</b>
+              <span class="arcade-wave">الموجة <b id="arcadeWave">١</b> <i>•</i> الأفضل <b id="arcadeBest">٠</b></span>
+            </div>
+          </div>
+
+          <div class="game-status-row">
+            <div class="turn-message" id="turnMessage"><span class="msg-dot"></span><span id="turnMessageText">دور لولو…</span></div>
+            <div class="game-mode-chip" id="gameModeChip"><svg class="ico"><use href="#i-users"/></svg><span>مواجهة</span></div>
+            <div class="combo-chip" id="comboChip" hidden><svg class="ico"><use href="#i-bolt"/></svg><span id="comboText">x2</span></div>
+          </div>
+
+          <div class="board-area">
+            <div class="board-shell" id="boardShell">
+              <div class="fever-glow" aria-hidden="true"></div>
+              <div class="board" id="board" role="group" aria-label="بطاقات الذاكرة"></div>
+              <div class="effect-layer" id="effectLayer" aria-hidden="true"></div>
+              <div class="board-banner" id="boardBanner" hidden>
+                <span class="banner-kicker" id="bannerKicker">استعد</span>
+                <strong id="bannerTitle">ابدأ المطابقة!</strong>
+                <span class="banner-sub" id="bannerSub">البطاقة الذهبية تساوي وقتًا ونقاطًا أكثر</span>
+              </div>
+              <div class="countdown-overlay" id="countdownOverlay" hidden>
+                <span class="countdown-ring"></span>
+                <b id="countdownNumber">٣</b>
+                <span>رکّز…</span>
+              </div>
+            </div>
+
+            <div class="game-action-row">
+              <div class="turn-hint" id="turnHint"><svg class="ico"><use href="#i-touch"/></svg><span>اقلب بطاقتين… وابحث عن التوأم</span></div>
+              <div class="abilities" id="abilities" aria-label="قدرات القطة">
+                <button class="ability-btn" id="abilityPeek" data-ability="peek" aria-label="لمحة القطة — تكشف ٤ بطاقات مقابل طاقتين">
+                  <span class="ability-icon"><svg class="ico"><use href="#i-eye"/></svg></span>
+                  <span class="ability-copy"><b>لمحة</b><small><i class="energy-mini"></i> ٢</small></span>
+                  <span class="ability-glow"></span>
+                </button>
+                <button class="ability-btn" id="abilityShuffle" data-ability="shuffle" aria-label="خلطة المخالب — تخلط البطاقات وتضيف وقتًا">
+                  <span class="ability-icon"><svg class="ico"><use href="#i-shuffle"/></svg></span>
+                  <span class="ability-copy"><b>خلطة</b><small><i class="energy-mini"></i> ٣</small></span>
+                  <span class="ability-glow"></span>
+                </button>
+              </div>
+            </div>
+            <div class="energy-row">
+              <span class="energy-caption"><svg class="ico"><use href="#i-paw"/></svg> طاقة <b id="energyActiveName">لولو</b></span>
+              <div class="energy-track" id="activeEnergy"><i></i><i></i><i></i><i></i><i></i></div>
+              <span class="fever-hint" id="feverHint">٣ مطابقات متتالية = وضع البرق ⚡</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═════════════════════════ RESULTS ═════════════════════════ -->
+      <section class="screen results-screen" id="screen-results" aria-label="النتيجة">
+        <div class="results-rays" aria-hidden="true"></div>
+        <canvas id="confettiCanvas" aria-hidden="true"></canvas>
+        <div class="results-shell">
+          <div class="results-topline">
+            <button class="game-icon results-menu-btn" id="btnResultsMenu" aria-label="القائمة الرئيسية"><svg class="ico"><use href="#i-home"/></svg></button>
+            <span class="results-kicker">انتهت الجولة… وبدأت الحكاية</span>
+            <button class="game-icon" id="btnResultsSound" aria-label="الصوت" data-sound-toggle><svg class="ico sound-on"><use href="#i-music"/></svg><svg class="ico sound-off"><use href="#i-muted"/></svg></button>
+          </div>
+          <div class="results-card">
+            <div class="result-medallion" id="resultMedallion">
+              <span class="medal-crown"><svg class="ico"><use href="#i-crown"/></svg></span>
+              <span class="medal-cat" id="resultCat"></span>
+              <span class="medal-stars" aria-hidden="true"><i>✦</i><i>✦</i><i>✦</i></span>
+            </div>
+            <p class="eyebrow results-eyebrow" id="resultsEyebrow">نهاية مواجهة شرسة</p>
+            <h2 class="results-title" id="resultTitle">مبروك يا لولو!</h2>
+            <p class="results-sub" id="resultSub">قلبٌ سريع… وذاكرة أسرع.</p>
+            <div class="result-scoreline" id="resultScoreline"></div>
+            <div class="result-stats" id="resultStats"></div>
+            <div class="result-reward" id="resultReward"><svg class="ico"><use href="#i-star"/></svg> <b>+٥ نجوم</b><span>أُضيفت إلى رصيدك</span></div>
+            <div class="results-actions">
+              <button class="btn btn-primary" id="btnRematch"><svg class="ico"><use href="#i-refresh"/></svg> <span class="btn-label">إعادة التحدي</span></button>
+              <button class="btn btn-frost" id="btnChangeMode"><svg class="ico"><use href="#i-users"/></svg> <span class="btn-label">وضع آخر</span></button>
+            </div>
+            <button class="results-home-link" id="btnResultsHome"><svg class="ico"><use href="#i-home"/></svg> العودة إلى القائمة</button>
+          </div>
+          <p class="results-love">كل جولة معك… أحلى من اللي قبلها <svg class="ico"><use href="#i-heart"/></svg></p>
+        </div>
+      </section>
+    </main>
+
+    <!-- ═════════════════════════ MODALS ═════════════════════════ -->
+    <div class="modal-layer" id="modalLayer" aria-live="polite">
+      <div class="modal-backdrop" id="modalBackdrop"></div>
+
+      <!-- modes -->
+      <div class="modal" id="modalModes" role="dialog" aria-modal="true" aria-labelledby="modesTitle">
+        <div class="modal-card modes-modal">
+          <button class="modal-close" data-close aria-label="إغلاق"><svg class="ico"><use href="#i-close"/></svg></button>
+          <div class="modal-head">
+            <span class="modal-kicker"><span class="kicker-line"></span> ماذا نلعب اليوم؟</span>
+            <h2 id="modesTitle">اختر مواجهتك</h2>
+            <p>ثلاث طرق للعب… وقلب واحد سريع. كل وضع له إيقاعه الخاص.</p>
+          </div>
+          <div class="mode-grid">
+            <button class="mode-card mode-duel" data-mode="duel">
+              <span class="mode-tag">الأكثر حماسًا</span>
+              <div class="mode-art">
+                <span class="mode-cat c1" data-cat-avatar="lulu"></span>
+                <span class="mode-lightning"><svg class="ico"><use href="#i-bolt"/></svg></span>
+                <span class="mode-cat c2" data-cat-avatar="zaatar"></span>
+                <span class="mode-vs">VS</span>
+              </div>
+              <div class="mode-body">
+                <span class="mode-eyebrow">لاعبان • نفس الجهاز</span>
+                <h3>مواجهة الأصدقاء</h3>
+                <p>خمس عشرة مطابقة، أدوار متبادلة، وقدرات تُقلب الطاولة. من ستكون ذاكرتها الأسرع؟</p>
+                <div class="mode-facts"><span><svg class="ico"><use href="#i-users"/></svg> ٢ لاعبين</span><span><svg class="ico"><use href="#i-clock"/></svg> ١٦ ث للدور</span></div>
+                <span class="mode-go">ابدأ المواجهة <svg class="ico"><use href="#i-arrow-left"/></svg></span>
+              </div>
+            </button>
+            <button class="mode-card mode-ai" data-mode="ai">
+              <span class="mode-tag mode-tag--quiet">تحدي شخصي</span>
+              <div class="mode-art">
+                <span class="mode-cat c1" data-cat-avatar="zaatar"></span>
+                <span class="mode-thought">؟</span>
+                <span class="mode-card-stack"><i></i><i></i><i></i></span>
+              </div>
+              <div class="mode-body">
+                <span class="mode-eyebrow">قطّ آلي • ٣ مستويات</span>
+                <h3>تحدي زعتر</h3>
+                <p>زعتر يتذكر كل بطاقة رآها. اختر مستوى ذكائه… ثم أثبت من القطة الأذكى.</p>
+                <div class="mode-facts"><span><svg class="ico"><use href="#i-bot"/></svg> ضد الحاسوب</span><span><svg class="ico"><use href="#i-bolt"/></svg> ذكاء متصاعد</span></div>
+                <span class="mode-go">تحدّي زعتر <svg class="ico"><use href="#i-arrow-left"/></svg></span>
+              </div>
+            </button>
+            <button class="mode-card mode-arcade" data-mode="arcade">
+              <span class="mode-tag mode-tag--gold">أكشن خالص</span>
+              <div class="mode-art">
+                <span class="mode-timer">٧٠</span>
+                <span class="arcade-fruit f1"><img src="assets/img/fruits/lemon.svg" alt=""></span>
+                <span class="arcade-fruit f2"><img src="assets/img/fruits/watermelon.svg" alt=""></span>
+                <span class="arcade-fruit f3"><img src="assets/img/fruits/pineapple.svg" alt=""></span>
+                <span class="mode-bolt"><svg class="ico"><use href="#i-bolt"/></svg></span>
+              </div>
+              <div class="mode-body">
+                <span class="mode-eyebrow">فردي • ضد الساعة</span>
+                <h3>تحدي البرق</h3>
+                <p>سبعون ثانية، موجات متتالية، وسلسلة مطابقات ترفع مضاعف النقاط. كم تستطيع أن تسرع؟</p>
+                <div class="mode-facts"><span><svg class="ico"><use href="#i-clock"/></svg> ٧٠ ثانية</span><span><svg class="ico"><use href="#i-trophy"/></svg> أفضل نتيجة</span></div>
+                <span class="mode-go">أشعل البرق <svg class="ico"><use href="#i-arrow-left"/></svg></span>
+              </div>
+            </button>
+          </div>
+          <div class="mode-footer">
+            <button class="subtle-btn" data-open="guide"><svg class="ico"><use href="#i-book"/></svg> أول مرة تلعب؟ افتح الدليل السريع</button>
+            <span class="mode-footer-note">لا حاجة لإنترنت — كل شيء جاهز هنا.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- setup -->
+      <div class="modal" id="modalSetup" role="dialog" aria-modal="true" aria-labelledby="setupTitle">
+        <div class="modal-card setup-modal">
+          <button class="modal-close" data-close aria-label="إغلاق"><svg class="ico"><use href="#i-close"/></svg></button>
+          <div class="modal-head setup-head">
+            <span class="modal-kicker" id="setupKicker"><span class="kicker-line"></span> مواجهة الأصدقاء</span>
+            <h2 id="setupTitle">من سيصنع الذكريات؟</h2>
+            <p id="setupSub">اختر القطة والاسم… ثم اترك المخالب تتكلم.</p>
+          </div>
+          <div class="setup-body" id="setupContent"></div>
+          <div class="setup-footer">
+            <div class="setup-summary" id="setupSummary"></div>
+            <button class="btn btn-primary btn-start" id="btnStartGame">
+              <span class="btn-shine"></span>
+              <span class="btn-label">هيا نلعب</span>
+              <svg class="ico"><use href="#i-paw"/></svg>
+            </button>
+          </div>
+          <p class="setup-note"><svg class="ico"><use href="#i-heart"/></svg> كل جولة مدتها قصيرة، والضحك مدته أطول.</p>
+        </div>
+      </div>
+
+      <!-- guide -->
+      <div class="modal" id="modalGuide" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+        <div class="modal-card guide-modal">
+          <button class="modal-close" data-close aria-label="إغلاق"><svg class="ico"><use href="#i-close"/></svg></button>
+          <div class="modal-head">
+            <span class="modal-kicker"><span class="kicker-line"></span> دليل القطة الذكية</span>
+            <h2 id="guideTitle">كيف تصنع الفوز؟</h2>
+            <p>ليست مجرد لعبة ذاكرة. السر في الثلاثة: التركيز، الطاقة، والسرعة.</p>
+          </div>
+          <div class="guide-grid">
+            <article class="guide-step">
+              <span class="step-no">٠١</span>
+              <div class="guide-visual">
+                <div class="mini-card back"><svg class="ico"><use href="#i-paw"/></svg></div>
+                <div class="mini-card face is-flipped"><img src="assets/img/fruits/strawberry.svg" alt=""></div>
+              </div>
+              <h3>اقلب… وتذكر</h3>
+              <p>اقلب بطاقتين في كل دور. إذا تطابقت الفاكهة، تحتفظ بالدور وتربح النقطة.</p>
+            </article>
+            <article class="guide-step">
+              <span class="step-no">٠٢</span>
+              <div class="guide-visual">
+                <div class="mini-card face"><img src="assets/img/fruits/watermelon.svg" alt=""></div>
+                <div class="mini-card face"><img src="assets/img/fruits/watermelon.svg" alt=""></div>
+                <span class="guide-spark">✦</span>
+              </div>
+              <h3>سلسلة = برق</h3>
+              <p>ثلاث مطابقات متتالية تشعل «وضع البرق»: نقاط مضاعفة، مؤقت أطول، ووميض يملأ الشاشة.</p>
+            </article>
+            <article class="guide-step">
+              <span class="step-no">٠٣</span>
+              <div class="guide-visual guide-energy">
+                <span class="energy-orb">٢</span>
+                <svg class="ico"><use href="#i-eye"/></svg>
+                <span class="energy-paw"><svg class="ico"><use href="#i-paw"/></svg></span>
+                <svg class="ico"><use href="#i-shuffle"/></svg>
+              </div>
+              <h3>اجمع الطاقة</h3>
+              <p>كل مطابقة تمنحك طاقة. لمحة تكشف ٤ بطاقات، وخلطة تخلط البطاقات وتمنحك وقتًا إضافيًا.</p>
+            </article>
+            <article class="guide-step">
+              <span class="step-no">٠٤</span>
+              <div class="guide-visual">
+                <span class="guide-clock"><svg class="ico"><use href="#i-clock"/></svg></span>
+                <div class="mini-card golden"><img src="assets/img/fruits/pineapple.svg" alt=""></div>
+                <span class="guide-bolt"><svg class="ico"><use href="#i-bolt"/></svg></span>
+              </div>
+              <h3>راقب المؤقّت والذهبي</h3>
+              <p>انتهاء وقت دورك يمرره للخصم. وفي كل لوحة زوج ذهبي سري: نقاط وطاقة إضافية لمن يجده.</p>
+            </article>
+          </div>
+          <div class="guide-bottom">
+            <div class="guide-tip"><span class="cat-tip" data-cat-avatar="lulu"></span><p><b>همسة لولو:</b> تذكر مكان الفاكهة حتى لو جاء دور زعتر. الخصم يكشف لك مجانًا!</p></div>
+            <div class="guide-abilities">
+              <span><svg class="ico"><use href="#i-eye"/></svg> لمحة = ٢ طاقة</span>
+              <span><svg class="ico"><use href="#i-shuffle"/></svg> خلطة = ٣ طاقة</span>
+              <span><svg class="ico"><use href="#i-clock"/></svg> خلطة = +٤ ث</span>
+            </div>
+          </div>
+          <div class="guide-cta">
+            <button class="btn btn-primary" data-open="modes"><svg class="ico"><use href="#i-play"/></svg> فهمت… هيا نلعب</button>
+            <button class="subtle-btn" data-close>سأعود للقائمة</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- settings -->
+      <div class="modal" id="modalSettings" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+        <div class="modal-card settings-modal">
+          <button class="modal-close" data-close aria-label="إغلاق"><svg class="ico"><use href="#i-close"/></svg></button>
+          <div class="modal-head">
+            <span class="modal-kicker"><span class="kicker-line"></span> على ذوقك</span>
+            <h2 id="settingsTitle">الإعدادات</h2>
+            <p>اضبط الصوت والحركة… لنلعب بطريقتك.</p>
+          </div>
+          <div class="setting-block">
+            <div class="setting-icon music-setting"><svg class="ico"><use href="#i-music"/></svg></div>
+            <div class="setting-main">
+              <div class="setting-label"><b>الموسيقى</b><span id="musicVolLabel">٧٠٪</span></div>
+              <p>مقطوعات أصلية صنعت خصيصًا لهذه اللعبة.</p>
+              <input class="range" id="musicVolume" type="range" min="0" max="100" value="70" aria-label="مستوى الموسيقى">
+            </div>
+            <button class="switch" id="musicSwitch" role="switch" aria-checked="true" aria-label="الموسيقى"><span></span></button>
+          </div>
+          <div class="setting-block">
+            <div class="setting-icon"><svg class="ico"><use href="#i-sound"/></svg></div>
+            <div class="setting-main">
+              <div class="setting-label"><b>المؤثرات الصوتية</b><span id="sfxVolLabel">٨٠٪</span></div>
+              <p>همسات البطاقات، فرقعات المطابقة… وتكتكات الوقت.</p>
+              <input class="range" id="sfxVolume" type="range" min="0" max="100" value="80" aria-label="مستوى المؤثرات">
+            </div>
+            <button class="switch" id="sfxSwitch" role="switch" aria-checked="true" aria-label="المؤثرات"><span></span></button>
+          </div>
+          <div class="setting-block">
+            <div class="setting-icon"><svg class="ico"><use href="#i-sparkle"/></svg></div>
+            <div class="setting-main">
+              <div class="setting-label"><b>حركة أقل</b><span id="motionLabel">ممتعة</span></div>
+              <p>تقليل الاهتزاز والجزيئات إن كانت الحركة تزعجك.</p>
+            </div>
+            <button class="switch" id="motionSwitch" role="switch" aria-checked="false" aria-label="حركة أقل"><span></span></button>
+          </div>
+          <div class="settings-tip"><svg class="ico"><use href="#i-info"/></svg><span>يمكنك إيقاف الصوت في أي وقت من أعلى القائمة أو خلال اللعب.</span></div>
+          <div class="settings-actions">
+            <button class="subtle-btn danger-btn" id="btnResetProgress"><svg class="ico"><use href="#i-refresh"/></svg> إعادة ضبط التقدم</button>
+            <button class="subtle-btn" data-open="about"><svg class="ico"><use href="#i-heart"/></svg> عن اللعبة</button>
+          </div>
+          <p class="settings-signature">صُنعت بحب • مياو ميموري ٢٠٢٦</p>
+        </div>
+      </div>
+
+      <!-- wardrobe -->
+      <div class="modal" id="modalWardrobe" role="dialog" aria-modal="true" aria-labelledby="wardrobeTitle">
+        <div class="modal-card wardrobe-modal">
+          <button class="modal-close" data-close aria-label="إغلاق"><svg class="ico"><use href="#i-close"/></svg></button>
+          <div class="modal-head">
+            <span class="modal-kicker"><span class="kicker-line"></span> خزانة القطط</span>
+            <h2 id="wardrobeTitle">اختر رفيقتك</h2>
+            <p>كل قطة لها لون ومزاج… والنجوم تفتح أبواب الخزانة.</p>
+          </div>
+          <div class="wardrobe-stars"><svg class="ico"><use href="#i-star"/></svg><b data-stars>٠</b><span>نجمة</span><em>كل فوز يمنحك نجومًا</em></div>
+          <div class="cat-grid" id="catGrid"></div>
+          <div class="wardrobe-foot">
+            <p><svg class="ico"><use href="#i-info"/></svg> اختر قطة القائمة، وستظهر كلاعبة أولى في الجولات القادمة.</p>
+            <button class="subtle-btn" data-close>تم</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- gift -->
+      <div class="modal" id="modalGift" role="dialog" aria-modal="true" aria-labelledby="giftTitle">
+        <div class="modal-card gift-modal">
+          <button class="modal-close" data-close aria-label="إغلاق"><svg class="ico"><use href="#i-close"/></svg></button>
+          <div class="gift-envelope" aria-hidden="true">
+            <span class="env-flap"></span>
+            <span class="env-heart"><svg class="ico"><use href="#i-heart"/></svg></span>
+            <span class="env-seal">مياو</span>
+          </div>
+          <span class="modal-kicker"><span class="kicker-line"></span> رسالة صغيرة… بمعنى كبير</span>
+          <h2 id="giftTitle">إلى أغلى أخ في العالم</h2>
+          <div class="gift-letter">
+            <p>صنعت لك هذه اللعبة لأنك تستحق أكثر من لعبة عادية.</p>
+            <p>كل بطاقة هنا تحمل ذكرى، وكل فوز لك فرحة لي. أردت أن يكون عندنا عالم صغير نلعب فيه معًا: فواكه، قطط، موسيقى… وضحكة لا تنتهي.</p>
+            <p>سأكون دائمًا في الجانب الآخر من الشاشة… أتحداك، وأخسر أمامك بسرور.</p>
+            <p class="gift-special">هذه ليست مجرد لعبة. هذه هديتي لك.</p>
+            <p class="gift-sign">— أخوك، الذي يفتخر بك دائمًا <svg class="ico"><use href="#i-heart"/></svg></p>
+          </div>
+          <div class="gift-actions">
+            <button class="btn btn-primary" data-open="modes"><svg class="ico"><use href="#i-paw"/></svg> لنلعب معًا</button>
+            <button class="subtle-btn" data-open="trailer"><svg class="ico"><use href="#i-film"/></svg> شاهد الإعلان أولًا</button>
+          </div>
+          <div class="gift-secret"><span>✦</span> كلما لعبت… تذكر أن هناك من يبتسم الآن <span>✦</span></div>
+        </div>
+      </div>
+
+      <!-- about -->
+      <div class="modal" id="modalAbout" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
+        <div class="modal-card about-modal">
+          <button class="modal-close" data-close aria-label="إغلاق"><svg class="ico"><use href="#i-close"/></svg></button>
+          <div class="about-cat" data-mascot></div>
+          <span class="modal-kicker"><span class="kicker-line"></span> عن اللعبة</span>
+          <h2 id="aboutTitle">مياو ميموري</h2>
+          <p class="about-lead">ذاكرة أنيقة… بقلب أكشن.<br>كل تفصيلة فيها صُنعت لتكون لك.</p>
+          <div class="about-facts">
+            <div><svg class="ico"><use href="#i-users"/></svg><b>٣ أوضاع</b><span>مواجهة، ذكاء آلي، وتحدي وقت</span></div>
+            <div><svg class="ico"><use href="#i-palette"/></svg><b>٥ قطط</b><span>شخصيات ونجوم تُجمع مع كل فوز</span></div>
+            <div><svg class="ico"><use href="#i-music"/></svg><b>موسيقى أصلية</b><span>مقطوعتان وترايلر سينمائي</span></div>
+            <div><svg class="ico"><use href="#i-film"/></svg><b>إعلان خاص</b><span>فيلم قصير مصنوع بكل التفاصيل</span></div>
+          </div>
+          <div class="about-tech">
+            <span>التصميم والرسم والبرمجة: أخوك</span>
+            <span>جميع الأصوات والموسيقى: مياو ميموري</span>
+            <span>الإصدار ١.٠ • صنعت بحب لأغلى أخ</span>
+          </div>
+          <button class="btn btn-primary" data-close>إغلاق والذهاب للعب <svg class="ico"><use href="#i-paw"/></svg></button>
+        </div>
+      </div>
+
+      <!-- pause -->
+      <div class="modal" id="modalPause" role="dialog" aria-modal="true" aria-labelledby="pauseTitle">
+        <div class="modal-card pause-modal">
+          <span class="pause-eyes"><i></i><i></i></span>
+          <span class="modal-kicker"><span class="kicker-line"></span> استراحة قطة</span>
+          <h2 id="pauseTitle">خذ نفسًا…</h2>
+          <p>الوقت متوقف الآن. أنت في أمان.</p>
+          <div class="pause-stats">
+            <span>المطابقات <b id="pauseMatches">٠</b></span>
+            <span>السلسلة <b id="pauseCombo">×١</b></span>
+            <span>الطاقة <b id="pauseEnergy">٠</b></span>
+          </div>
+          <div class="pause-actions">
+            <button class="btn btn-primary" id="btnResume"><svg class="ico"><use href="#i-play"/></svg> أكمل اللعب</button>
+            <button class="btn btn-frost" id="btnRestart"><svg class="ico"><use href="#i-refresh"/></svg> من البداية</button>
+            <button class="subtle-btn" id="btnPauseGuide"><svg class="ico"><use href="#i-book"/></svg> دليل سريع</button>
+            <button class="subtle-btn" id="btnPauseSettings"><svg class="ico"><use href="#i-settings"/></svg> الإعدادات</button>
+            <button class="subtle-btn danger-btn" id="btnPauseExit"><svg class="ico"><use href="#i-home"/></svg> الخروج للقائمة</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- trailer -->
+      <div class="modal trailer-modal-wrap" id="modalTrailer" role="dialog" aria-modal="true" aria-labelledby="trailerTitle">
+        <div class="trailer-shell">
+          <button class="modal-close trailer-close" data-close aria-label="إغلاق الإعلان"><svg class="ico"><use href="#i-close"/></svg></button>
+          <div class="trailer-heading">
+            <span class="modal-kicker"><span class="kicker-line"></span> من عالم مياو ميموري</span>
+            <h2 id="trailerTitle">الإعلان السينمائي</h2>
+            <p>فيلم قصير • صوت وصورة • ٤٥ ثانية</p>
+          </div>
+          <div class="video-frame" id="videoFrame">
+            <video id="trailerVideo" preload="metadata" playsinline poster="assets/img/trailer-poster.svg">
+              <source src="assets/MeowMemory-Trailer.mp4" type="video/mp4">
+            </video>
+            <div class="video-tap" id="videoTap">
+              <span class="big-play"><svg class="ico"><use href="#i-play"/></svg></span>
+              <span>شغّل الإعلان</span>
+            </div>
+            <div class="video-controls">
+              <button id="videoPlay" class="video-btn" aria-label="تشغيل أو إيقاف"><svg class="ico"><use href="#i-pause"/></svg></button>
+              <span class="video-time" id="videoTime">٠٠:٠٠ / ٠٠:٤٥</span>
+              <div class="video-progress" id="videoProgress"><span id="videoProgressFill"></span><i id="videoScrubber"></i></div>
+              <button id="videoMute" class="video-btn" aria-label="كتم الصوت"><svg class="ico"><use href="#i-sound"/></svg></button>
+              <button id="videoFull" class="video-btn" aria-label="ملء الشاشة"><svg class="ico"><use href="#i-expand"/></svg></button>
+            </div>
+          </div>
+          <div class="trailer-foot"><p>صُمم الإعلان خصيصًا لهذه اللعبة: موسيقى أصلية، وتعليق صوتي، ومونتاج على الإيقاع.</p><button class="subtle-btn" data-open="modes">شاهدت… العب الآن <svg class="ico"><use href="#i-arrow-left"/></svg></button></div>
+        </div>
+      </div>
+
+      <!-- confirm dialog -->
+      <div class="modal" id="modalConfirm" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+        <div class="modal-card confirm-modal">
+          <span class="confirm-icon" id="confirmIcon"><svg class="ico"><use href="#i-info"/></svg></span>
+          <h2 id="confirmTitle">هل أنت متأكد؟</h2>
+          <p id="confirmText">سيُفقد تقدم هذه الجولة.</p>
+          <div class="confirm-actions">
+            <button class="btn btn-frost" id="confirmCancel">لا، أكمل اللعب</button>
+            <button class="btn btn-primary confirm-yes" id="confirmYes">نعم، أكّد</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast-stack" id="toastStack" aria-live="polite"></div>
+    <div class="celebration-hearts" id="celebrationHearts" aria-hidden="true"></div>
+  </div>
+
+  <audio id="musicMenu" preload="auto" loop>
+    <source src="assets/audio/menu-theme.ogg" type="audio/ogg">
+    <source src="assets/audio/menu-theme.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="musicGame" preload="auto" loop>
+    <source src="assets/audio/battle-theme.ogg" type="audio/ogg">
+    <source src="assets/audio/battle-theme.mp3" type="audio/mpeg">
+  </audio>
+
+  <script src="js/art.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>

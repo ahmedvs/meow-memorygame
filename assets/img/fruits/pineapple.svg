@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160" role="img" aria-label="pineapple" class="fruit fruit-pineapple">
+<defs><linearGradient id="pineG" x1=".2" y1=".1" x2=".8" y2=".9">
+<stop stop-color="#ffe392"/><stop offset=".55" stop-color="#f6c25d"/><stop offset="1" stop-color="#db9e32"/>
+</linearGradient></defs>
+<ellipse cx="80" cy="142" rx="42" ry="7" fill="#3a293b" opacity=".13"/>
+
+<path d="M80 65C69 50 67 34 78 18c3 11 7 19 12 24 0-13 4-24 13-35 4 17 4 30-1 42Z" fill="#68b97a" stroke="#432e45" stroke-width="5" stroke-linejoin="round"/>
+<path d="M76 30c-8-9-17-13-28-14 2 11 8 20 18 27" fill="#82c98a" stroke="#432e45" stroke-width="4.5" stroke-linejoin="round"/>
+<path d="M97 31c8-7 17-10 27-10-3 10-8 17-17 23" fill="#82c98a" stroke="#432e45" stroke-width="4.5" stroke-linejoin="round"/>
+<path d="M80 50c-27 0-38 15-38 41 0 28 16 46 38 46s38-18 38-46c0-26-11-41-38-41Z" fill="url(#pineG)" stroke="#432e45" stroke-width="6"/>
+<g stroke="#c98827" stroke-width="2.6" opacity=".7">
+ <path d="M46 68 111 125"/><path d="M56 56 123 99"/><path d="M113 68 49 125"/><path d="M104 56 38 99"/>
+</g>
+<g fill="#a96f1f" opacity=".55">
+ <circle cx="70" cy="72" r="2"/><circle cx="94" cy="77" r="2"/><circle cx="58" cy="92" r="2"/>
+ <circle cx="105" cy="98" r="2"/><circle cx="76" cy="112" r="2"/>
+</g>
+<path d="M51 71c-6 13-6 29-1 43" stroke="#fff0b6" stroke-width="5.5" stroke-linecap="round" opacity=".55"/>
+<g class="fruit-face" transform="translate(80 94) scale(0.95)" fill="none">
+  <ellipse cx="-10.0" cy="0" rx="3.6" ry="5.2" fill="#432e45"/>
+  <ellipse cx="-8.9" cy="-1.7" rx="1.15" ry="1.65" fill="#fff" opacity=".9"/>
+  <ellipse cx="10.0" cy="0" rx="3.6" ry="5.2" fill="#432e45"/>
+  <ellipse cx="11.1" cy="-1.7" rx="1.15" ry="1.65" fill="#fff" opacity=".9"/>
+  <path d="M-4.5 10 Q0 15.4 4.5 10" stroke="#432e45" stroke-width="2.9" stroke-linecap="round"/>
+  <ellipse cx="-26" cy="9" rx="6.5" ry="3.2" fill="#e0a067" opacity=".38"/>
+  <ellipse cx="26" cy="9" rx="6.5" ry="3.2" fill="#e0a067" opacity=".38"/>
+</g>
+
+</svg>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160" role="img" aria-label="lemon" class="fruit fruit-lemon">
+<defs><linearGradient id="lemonG" x1=".2" y1=".15" x2=".8" y2=".9">
+<stop stop-color="#fff3a1"/><stop offset=".52" stop-color="#ffe05c"/><stop offset="1" stop-color="#e8b933"/>
+</linearGradient></defs>
+<ellipse cx="80" cy="142" rx="42" ry="7" fill="#3a293b" opacity=".13"/>
+
+<path d="M32 72c6-22 29-37 55-34 24 3 44 23 42 43-2 21-25 37-51 36-29-1-52-22-46-45Z" fill="url(#lemonG)" stroke="#432e45" stroke-width="6"/>
+<path d="M32 72c-5-5-8-11-7-17 7 1 12 5 16 10" fill="#efc63d" stroke="#432e45" stroke-width="4.5" stroke-linejoin="round"/>
+<path d="M128 75c6 3 9 8 10 14-8 1-14-2-19-7" fill="#efc63d" stroke="#432e45" stroke-width="4.5" stroke-linejoin="round"/>
+<path d="M91 41c7-11 16-16 28-18-2 12-8 20-18 26Z" fill="#71ba7a" stroke="#432e45" stroke-width="4.5" stroke-linejoin="round"/>
+<g fill="#d3a525" opacity=".4">
+ <circle cx="59" cy="59" r="1.6"/><circle cx="77" cy="52" r="1.6"/><circle cx="112" cy="99" r="1.6"/>
+</g>
+<path d="M45 69c-3 8-2 17 2 24" stroke="#fff8c9" stroke-width="6" stroke-linecap="round" opacity=".65"/>
+<g class="fruit-face" transform="translate(82 80) scale(1.0)" fill="none">
+  <ellipse cx="-11.0" cy="0" rx="3.6" ry="5.2" fill="#432e45"/>
+  <ellipse cx="-9.9" cy="-1.7" rx="1.15" ry="1.65" fill="#fff" opacity=".9"/>
+  <ellipse cx="11.0" cy="0" rx="3.6" ry="5.2" fill="#432e45"/>
+  <ellipse cx="12.1" cy="-1.7" rx="1.15" ry="1.65" fill="#fff" opacity=".9"/>
+  <path d="M-4.5 11 Q0 16.4 4.5 11" stroke="#432e45" stroke-width="2.9" stroke-linecap="round"/>
+  <ellipse cx="-28" cy="10" rx="6.5" ry="3.2" fill="#ff8e9d" opacity=".38"/>
+  <ellipse cx="28" cy="10" rx="6.5" ry="3.2" fill="#ff8e9d" opacity=".38"/>
+</g>
+
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160" role="img" aria-label="apple" class="fruit fruit-apple">
+<defs><linearGradient id="appleG" x1=".2" y1=".1" x2=".8" y2=".95">
+<stop stop-color="#ff9585"/><stop offset=".52" stop-color="#f45b68"/><stop offset="1" stop-color="#cf3650"/>
+</linearGradient></defs>
+<ellipse cx="80" cy="142" rx="42" ry="7" fill="#3a293b" opacity=".13"/>
+
+<path d="M80 51C71 39 58 35 46 38 28 42 20 60 25 80c5 24 24 52 41 53 8 1 10-6 14-6s7 7 16 6c17-2 35-30 39-53 3-20-5-38-23-42-12-3-24 2-32 13Z" fill="url(#appleG)" stroke="#432e45" stroke-width="6" stroke-linejoin="round"/>
+<path d="M80 49c2-12 5-20 10-27" stroke="#68452e" stroke-width="8" stroke-linecap="round"/>
+<path d="M89 29c13-16 33-12 38-2-8 15-27 18-40 9Z" fill="#68b778" stroke="#432e45" stroke-width="5" stroke-linejoin="round"/>
+<path d="M95 23c7-3 16-2 22 3" stroke="#b8e2ae" stroke-width="3.2" stroke-linecap="round" opacity=".85"/>
+<path d="M48 61c-7 11-8 25-4 37" stroke="#ffd9d3" stroke-width="8" stroke-linecap="round" opacity=".6"/>
+<g class="fruit-face" transform="translate(80 88) scale(1.0)" fill="none">
+  <ellipse cx="-11.0" cy="0" rx="3.6" ry="5.2" fill="#432e45"/>
+  <ellipse cx="-9.9" cy="-1.7" rx="1.15" ry="1.65" fill="#fff" opacity=".9"/>
+  <ellipse cx="11.0" cy="0" rx="3.6" ry="5.2" fill="#432e45"/>
+  <ellipse cx="12.1" cy="-1.7" rx="1.15" ry="1.65" fill="#fff" opacity=".9"/>
+  <path d="M-4.5 11 Q0 16.4 4.5 11" stroke="#432e45" stroke-width="2.9" stroke-linecap="round"/>
+  <ellipse cx="-28" cy="10" rx="6.5" ry="3.2" fill="#ff8e9d" opacity=".38"/>
+  <ellipse cx="28" cy="10" rx="6.5" ry="3.2" fill="#ff8e9d" opacity=".38"/>
+</g>
+
+</svg>
