@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160" role="img" aria-label="raspberry" class="fruit fruit-raspberry">
+<defs><linearGradient id="raspberryG" x1=".2" y1=".1" x2=".8" y2=".95">
+<stop stop-color="#ef8aa2"/><stop offset=".5" stop-color="#d65b7c"/><stop offset="1" stop-color="#ad3e60"/>
+</linearGradient></defs>
+<ellipse cx="80" cy="142" rx="42" ry="7" fill="#3a293b" opacity=".13"/>
+<g stroke="#432e45" stroke-width="4.5">
+  <circle cx="64" cy="74" r="14" fill="url(#raspberryG)"/>
+  <circle cx="96" cy="74" r="14" fill="url(#raspberryG)"/>
+  <circle cx="54" cy="93" r="15" fill="url(#raspberryG)"/>
+  <circle cx="80" cy="87" r="16" fill="url(#raspberryG)"/>
+  <circle cx="106" cy="93" r="15" fill="url(#raspberryG)"/>
+  <circle cx="64" cy="110" r="14" fill="url(#raspberryG)"/>
+  <circle cx="96" cy="110" r="14" fill="url(#raspberryG)"/>
+  <circle cx="80" cy="121" r="13" fill="url(#raspberryG)"/>
+</g>
+<path d="M80 61c-1-10 1-16 6-22" stroke="#6d5431" stroke-width="5.5" stroke-linecap="round"/>
+<path d="M87 41c12-10 27-6 32 3-8 10-22 10-32 4Z" fill="#6db777" stroke="#432e45" stroke-width="4.5" stroke-linejoin="round"/>
+<path d="M49 75c6-10 14-16 22-19" stroke="#ffd6df" stroke-width="5" stroke-linecap="round" opacity=".55"/>
+<g class="fruit-face" transform="translate(80 96) scale(1.0)" fill="none">
+  <ellipse cx="-10.5" cy="0" rx="3.5" ry="5.1" fill="#432e45"/>
+  <ellipse cx="-9.4" cy="-1.7" rx="1.12" ry="1.6" fill="#fff" opacity=".92"/>
+  <ellipse cx="10.5" cy="0" rx="3.5" ry="5.1" fill="#432e45"/>
+  <ellipse cx="11.6" cy="-1.7" rx="1.12" ry="1.6" fill="#fff" opacity=".92"/>
+  <path d="M-4.3 10.5 Q0 15.7 4.3 10.5" stroke="#432e45" stroke-width="2.8" stroke-linecap="round"/>
+  <ellipse cx="-24" cy="10" rx="5.8" ry="3" fill="#ff9fae" opacity=".32"/>
+  <ellipse cx="24" cy="10" rx="5.8" ry="3" fill="#ff9fae" opacity=".32"/>
+</g>
+</svg>

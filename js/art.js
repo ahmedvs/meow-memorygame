@@ -17,7 +17,10 @@
     { id: 'mango',       name: 'مانجو',      color: '#ffc150', treat: 'استوائية' },
     { id: 'pomegranate', name: 'رمان',       color: '#e14f56', treat: 'ياقوتية' },
     { id: 'pear',        name: 'كمثرى',      color: '#b9d36f', treat: 'هادئة' },
-    { id: 'fig',         name: 'تين',        color: '#9365ad', treat: 'ملكية' }
+    { id: 'fig',         name: 'تين',        color: '#9365ad', treat: 'ملكية' },
+    { id: 'blueberry',   name: 'عنبية',      color: '#6b7fc7', treat: 'لؤلؤية' },
+    { id: 'coconut',     name: 'جوز الهند',  color: '#d9c3a3', treat: 'استوائية' },
+    { id: 'raspberry',   name: 'توت العليق', color: '#d65b7c', treat: 'ياقوتية' }
   ];
 
   const catDefs = [
@@ -26,6 +29,14 @@
     { id: 'mishmish', name: 'مشمش', fur: '#f2c38d', furDark: '#dba46b', inner: '#f3a6a0', accessory: '#ef9a75', accessory2: '#ca6c53', eye: '#80a94d', swatch: '#eab27c', trait: 'القطة المشاكسة', unlocked: false, need: 40 },
     { id: 'layl',   name: 'ليل',    fur: '#817593', furDark: '#65566e', inner: '#b28ba6', accessory: '#f5c869', accessory2: '#c99a3c', eye: '#ffd56b', swatch: '#756a87', trait: 'قطة منتصف الليل', unlocked: false, need: 90 },
     { id: 'naanaa', name: 'نعناع',  fur: '#aed9bd', furDark: '#8fc0a0', inner: '#eab8c8', accessory: '#ec8daa', accessory2: '#c46484', eye: '#7b8f4e', swatch: '#a2d3b3', trait: 'القطة المنعشة', unlocked: false, need: 150 }
+  ];
+
+  /* Story-only cast. These cats never appear in the wardrobe; they belong to the campaign. */
+  const storyCatDefs = [
+    { id: 'meow', name: 'مياو ميموري', fur: '#fff1de', furDark: '#e6cbb5', inner: '#f2b5c4', accessory: '#8065c9', accessory2: '#57409f', eye: '#9b7bea', swatch: '#e8dfff', trait: 'حارس الذكريات', story: true },
+    { id: 'luz', name: 'لوز', fur: '#e2ebf7', furDark: '#b9cce2', inner: '#e8b6c8', accessory: '#8fb9d9', accessory2: '#587fa8', eye: '#69a4d5', swatch: '#d6e8f6', trait: 'أنيقة التوقيت', story: true },
+    { id: 'zill', name: 'ظل', fur: '#63566f', furDark: '#40374c', inner: '#a57cad', accessory: '#8a70c7', accessory2: '#503c88', eye: '#b79aff', swatch: '#554767', trait: 'سيد الظل', story: true },
+    { id: 'bundoq', name: 'بندق', fur: '#d8aa73', furDark: '#af7e4b', inner: '#e2b1ad', accessory: '#8eb07a', accessory2: '#587c48', eye: '#b88646', swatch: '#c99b66', trait: 'عقل المكتبة', story: true }
   ];
 
   /* Exterior mascot. The SVG is injected inline so every ear, eye and paw can move. */
@@ -194,20 +205,24 @@
   <path d="M21 37C15 27 15 15 20 10c12 3 23 11 29 21 1 2 4 2 5 0 6-10 16-18 28-21 4 5 4 17-2 27 9 9 12 22 8 34-4 14-18 23-37 23S18 85 14 71c-4-12-1-25 7-34Z" fill="url(#cf-${id})" stroke="#402c44" stroke-width="3.4" stroke-linejoin="round"/>
   <path d="M22 32c-3-8-3-15-1-18 8 2 16 7 21 14-8 1-14 3-20 4Z" fill="url(#ce-${id})"/>
   <path d="M78 32c3-8 3-15 1-18-8 2-16 7-21 14 8 1 14 3 20 4Z" fill="url(#ce-${id})"/>
-  <g>
-    <ellipse cx="36" cy="54" rx="10" ry="12" fill="#fffdf5" stroke="#402c44" stroke-width="2.1"/>
-    <ellipse cx="64" cy="54" rx="10" ry="12" fill="#fffdf5" stroke="#402c44" stroke-width="2.1"/>
-    <ellipse cx="37" cy="55" rx="6.8" ry="9" fill="${cat.eye}"/>
-    <ellipse cx="63" cy="55" rx="6.8" ry="9" fill="${cat.eye}"/>
+  <g class="cat-eyes">
+    <ellipse class="cat-eye cat-eye-l" cx="36" cy="54" rx="10" ry="12" fill="#fffdf5" stroke="#402c44" stroke-width="2.1"/>
+    <ellipse class="cat-eye cat-eye-r" cx="64" cy="54" rx="10" ry="12" fill="#fffdf5" stroke="#402c44" stroke-width="2.1"/>
+    <ellipse class="cat-pupil cat-pupil-l" cx="37" cy="55" rx="6.8" ry="9" fill="${cat.eye}"/>
+    <ellipse class="cat-pupil cat-pupil-r" cx="63" cy="55" rx="6.8" ry="9" fill="${cat.eye}"/>
     <ellipse cx="37" cy="56" rx="2.8" ry="6.3" fill="#372636"/>
     <ellipse cx="63" cy="56" rx="2.8" ry="6.3" fill="#372636"/>
     <circle cx="34.5" cy="50.5" r="2.4" fill="#fff" opacity=".9"/>
     <circle cx="60.5" cy="50.5" r="2.4" fill="#fff" opacity=".9"/>
   </g>
+  <g class="cat-brows">
+    <path class="cat-brow cat-brow-l" d="M28 43c4-3 9-3 12-1" fill="none" stroke="#402c44" stroke-width="2" stroke-linecap="round" opacity="0"/>
+    <path class="cat-brow cat-brow-r" d="M72 43c-4-3-9-3-12-1" fill="none" stroke="#402c44" stroke-width="2" stroke-linecap="round" opacity="0"/>
+  </g>
   <ellipse cx="26" cy="65" rx="7" ry="3.5" fill="#eb969b" opacity=".35"/>
   <ellipse cx="74" cy="65" rx="7" ry="3.5" fill="#eb969b" opacity=".35"/>
   <ellipse cx="50" cy="65" rx="16" ry="10" fill="#fff8ed" opacity=".76"/>
-  <path d="M46.5 61.5c1.2-2.4 5.8-2.4 7 0 .5 1.5-1 3.4-3.5 3.4s-4-1.9-3.5-3.4Z" fill="#df7e8d" stroke="#402c44" stroke-width="1.5" stroke-linejoin="round"/>
+  <path class="cat-mouth" d="M46.5 61.5c1.2-2.4 5.8-2.4 7 0 .5 1.5-1 3.4-3.5 3.4s-4-1.9-3.5-3.4Z" fill="#df7e8d" stroke="#402c44" stroke-width="1.5" stroke-linejoin="round"/>
   <path d="M50 65c0 2.8-2.2 4.2-4.2 3.2M50 65c0 2.8 2.2 4.2 4.2 3.2" fill="none" stroke="#402c44" stroke-width="1.5" stroke-linecap="round"/>
   <g fill="none" stroke="#6d5366" stroke-width="1.25" stroke-linecap="round" opacity=".55">
     <path d="M15 58c-5-.8-8.5.1-11 1.8M16 64c-4.5.3-7.8 1.8-10 3.8"/>
@@ -224,10 +239,12 @@
   window.MMArt = {
     fruits: fruitDefs,
     cats: catDefs,
+    storyCats: storyCatDefs,
+    allCats: catDefs.concat(storyCatDefs),
     mascotSvg: mascot,
     catAvatarSvg,
     fruitSrc(id) { return `assets/img/fruits/${id}.svg`; },
     fruitById(id) { return fruitDefs.find((f) => f.id === id); },
-    catById(id) { return catDefs.find((c) => c.id === id) || catDefs[0]; }
+    catById(id) { return catDefs.concat(storyCatDefs).find((c) => c.id === id) || catDefs[0]; }
   };
 })();

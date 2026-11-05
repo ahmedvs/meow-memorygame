@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160" role="img" aria-label="coconut" class="fruit fruit-coconut">
+<defs><linearGradient id="coconutShellG" x1=".2" y1=".1" x2=".8" y2=".95">
+<stop stop-color="#b98d64"/><stop offset=".5" stop-color="#946844"/><stop offset="1" stop-color="#6f4a2d"/>
+</linearGradient><radialGradient id="coconutFleshG" cx=".45" cy=".3" r=".85">
+<stop stop-color="#fffdf4"/><stop offset=".65" stop-color="#f5ead5"/><stop offset="1" stop-color="#d9c3a3"/>
+</radialGradient></defs>
+<ellipse cx="80" cy="142" rx="42" ry="7" fill="#3a293b" opacity=".13"/>
+<path d="M25 92c0-32 25-53 55-53s55 21 55 53c0 26-24 42-55 42S25 118 25 92Z" fill="url(#coconutShellG)" stroke="#432e45" stroke-width="6"/>
+<path d="M38 91c0-24 19-41 42-41s42 17 42 41c0 19-19 31-42 31S38 110 38 91Z" fill="url(#coconutFleshG)" stroke="#432e45" stroke-width="5.5"/>
+<path d="M50 75c10-12 21-17 30-17" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".7"/>
+<g fill="#8c6748" opacity=".35">
+ <circle cx="54" cy="58" r="1.7"/><circle cx="105" cy="55" r="1.4"/><circle cx="118" cy="73" r="1.6"/><circle cx="42" cy="76" r="1.5"/>
+</g>
+<g class="fruit-face" transform="translate(80 92) scale(1.0)" fill="none">
+  <ellipse cx="-11.5" cy="0" rx="3.6" ry="5.2" fill="#432e45"/>
+  <ellipse cx="-10.4" cy="-1.7" rx="1.15" ry="1.65" fill="#fff" opacity=".95"/>
+  <ellipse cx="11.5" cy="0" rx="3.6" ry="5.2" fill="#432e45"/>
+  <ellipse cx="12.6" cy="-1.7" rx="1.15" ry="1.65" fill="#fff" opacity=".95"/>
+  <path d="M-4.5 11 Q0 16.4 4.5 11" stroke="#432e45" stroke-width="2.9" stroke-linecap="round"/>
+  <ellipse cx="-27" cy="11" rx="6.2" ry="3.1" fill="#ff9fae" opacity=".26"/>
+  <ellipse cx="27" cy="11" rx="6.2" ry="3.1" fill="#ff9fae" opacity=".26"/>
+</g>
+</svg>

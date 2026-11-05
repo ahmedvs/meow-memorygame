@@ -46,6 +46,20 @@
       reduceMotion: false,
       reduceMotionManual: false
     },
+    story: {
+      unlocked: ['tutorial'],
+      completed: [],
+      stars: {},
+      best: {},
+      seenScenes: [],
+      seenIntro: false,
+      completedStory: false,
+      current: 'tutorial'
+    },
+    launch: {
+      supportAnswer: null,
+      noticesSeen: false
+    },
     secretFound: false
   };
 

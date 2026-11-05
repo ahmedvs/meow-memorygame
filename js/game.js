@@ -37,6 +37,29 @@
     hard: { label: 'أسطوري', knownPairChance: .86, followChance: .96, firstThink: 500, secondThink: 430, memoryChance: .97 }
   };
   const BOT_NAMES = ['زعتر'];
+  const BOSS_ABILITY_INFO = {
+    freeze: { title: 'تجميد الدور', sub: 'دورك التالي سيُتخطّى…', icon: 'i-clock' },
+    shuffle: { title: 'تبديل البطاقات', sub: 'بطاقتان بدّلتا مكانهما دون أن تُكشفا', icon: 'i-shuffle' },
+    shadow: { title: 'عالم الظلام', sub: 'النور يخفت… والذاكرة وحدها تبقى', icon: 'i-eye' },
+    expand: { title: 'توسيع اللوحة', sub: 'صف جديد من البطاقات يظهر الآن', icon: 'i-expand' }
+  };
+
+  function createBossState(abilities = []) {
+    const list = Array.from(new Set(abilities.filter((id) => BOSS_ABILITY_INFO[id])));
+    return {
+      abilities: list,
+      botTurns: 0,
+      playerTurns: 0,
+      turns: 0,
+      next: { freeze: 4, shuffle: 2, shadow: 3, expand: 3 },
+      used: { freeze: 0, shuffle: 0, shadow: 0, expand: 0 },
+      freezeQueued: false,
+      freezeActive: false,
+      resolving: false,
+      lastAbility: null,
+      expandUsed: false
+    };
+  }
 
   const Game = {
     state: null,
@@ -59,7 +82,7 @@
       UI.closeAll();
 
       const mode = config.mode || 'duel';
-      const pairCount = mode === 'arcade' ? 12 : 15;
+      const pairCount = config.pairCount || (mode === 'arcade' ? 12 : 15);
       const cols = mode === 'arcade' ? 6 : 6;
       const turnMax = mode === 'arcade' ? 0 : TURN_TIME;
       const players = config.players.map((spec, index) => {
@@ -90,6 +113,12 @@
       this.state = {
         mode,
         difficulty: config.difficulty || 'medium',
+        storyChapter: config.storyChapter || null,
+        chapterTitle: config.chapterTitle || '',
+        chapterTag: config.chapterTag || '',
+        aiProfile: config.aiProfile || null,
+        bossAbilities: Array.isArray(config.bossAbilities) ? config.bossAbilities.slice() : [],
+        boss: createBossState(config.bossAbilities || []),
         players,
         deck,
         cols,
@@ -108,7 +137,7 @@
         aiThinking: false,
         aiPlanned: null,
         aiMemory: new Map(),
-        stats: { moves: 0, matches: 0, maxCombo: 0, peeks: 0, shuffles: 0, startedAt: performance.now() },
+        stats: { moves: 0, matches: 0, maxCombo: 0, peeks: 0, shuffles: 0, bossAbilities: 0, startedAt: performance.now() },
         arcade: mode === 'arcade' ? {
           timeLeft: ARCADE_TIME,
           score: 0,
@@ -123,7 +152,8 @@
         round: 1,
         lastActionAt: performance.now(),
         pendingResult: null,
-        visibilityPaused: false
+        visibilityPaused: false,
+        storyResult: null
       };
       this.lastTickSecond = null;
 
@@ -165,10 +195,20 @@
         let label = 'مواجهة';
         if (mode === 'ai') { icon = 'i-bot'; label = 'تحدي زعتر'; }
         if (mode === 'arcade') { icon = 'i-bolt'; label = 'تحدي البرق'; }
-        chip.innerHTML = `<svg class="ico"><use href="#${icon}"/></svg><span>${label}</span>`;
+        if (mode === 'story') {
+          icon = 'i-crown';
+          label = s.chapterTitle ? `${s.chapterTag || 'وضع القصة'} • ${s.chapterTitle}` : 'وضع القصة';
+          chip.classList.add('is-story');
+        } else {
+          chip.classList.remove('is-story');
+        }
+        chip.innerHTML = `<svg class="ico"><use href="#${icon}"/></svg><span>${esc(label)}</span>`;
       }
       const hint = $('#feverHint');
-      if (hint) hint.textContent = mode === 'arcade' ? 'السلسلة ترفع النقاط… راقب الوقت' : '٣ مطابقات متتالية = وضع البرق ⚡';
+      if (hint) {
+        if (mode === 'story') hint.textContent = 'قدرات الخصم تظهر قبل تفعيلها… راقب الإشارة';
+        else hint.textContent = mode === 'arcade' ? 'السلسلة ترفع النقاط… راقب الوقت' : '٣ مطابقات متتالية = وضع البرق ⚡';
+      }
       const abilityShuffle = $('#abilityShuffle .ability-copy b');
       if (abilityShuffle) abilityShuffle.textContent = mode === 'arcade' ? 'خلطة + وقت' : 'خلطة';
       const arcadeName = $('.arcade-player [data-hud-name="0"]');
@@ -253,8 +293,16 @@
       $('#board').style.removeProperty('--cols');
       $('#board').classList.remove('is-shuffling');
       $('#board').style.width = '';
-      $('#boardShell').classList.remove('is-sudden');
+      $('#boardShell').classList.remove('is-sudden', 'is-shadowed', 'is-expanding', 'is-boss-shuffling');
       $('#turnMessage').className = 'turn-message';
+      const gameScreen = $('#screen-game');
+      if (gameScreen) gameScreen.classList.remove('is-night');
+      const shadowWorld = $('#bossShadowWorld');
+      if (shadowWorld) shadowWorld.classList.remove('is-active', 'is-restoring');
+      const freezeOverlay = $('#freezeOverlay');
+      if (freezeOverlay) { freezeOverlay.hidden = true; freezeOverlay.classList.remove('is-active'); }
+      const callout = $('#bossAbilityCallout');
+      if (callout) callout.hidden = true;
     },
 
     makeDeck(pairCount, fruitCount) {
@@ -308,7 +356,7 @@
         if (card.matched) {
           el.setAttribute('aria-label', `تمت مطابقة ${fruit.name}`);
           el.disabled = true;
-          el.classList.add('is-locked');
+          el.classList.add('is-locked', 'is-matched', 'is-cleared');
         } else if (card.faceUp) {
           el.setAttribute('aria-label', fruit.name);
           el.setAttribute('aria-pressed', 'true');
@@ -465,15 +513,26 @@
       s.turnMax = s.timeLeft;
       s.lastWholeSecond = null;
       s.pendingResult = null;
-      if (s.players[s.current].bot) {
-        s.aiThinking = true;
-        this.flashTurnMessage('زعتر يفكر…', 'is-ai');
+      if (s.boss) {
+        s.boss.turns += 1;
+        if (s.current === 0) s.boss.playerTurns += 1;
+        else s.boss.botTurns += 1;
+      }
+      const active = s.players[s.current];
+      s.aiThinking = !!active.bot;
+      if (active.bot) {
+        this.flashTurnMessage(`${active.name} يفكر…`, 'is-ai');
       } else {
-        this.flashTurnMessage(s.isSudden ? `جولة الحسم: دور ${s.players[s.current].name}` : `دور ${s.players[s.current].name}…`, '');
+        this.flashTurnMessage(s.isSudden ? `جولة الحسم: دور ${active.name}` : `دور ${active.name}…`, '');
       }
       this.updateHUD(true);
       this.updateAbilityUI();
-      if (s.players[s.current].bot) this.maybeRunAi();
+      if (!active.bot) {
+        if (this.maybeFreezePlayerTurn()) return;
+      } else {
+        if (this.maybeUseBossAbility()) return;
+      }
+      if (active.bot) this.maybeRunAi();
     },
 
     flashTurnMessage(text, cls = '') {
@@ -482,6 +541,272 @@
       $('#turnMessageText').textContent = text;
       wrap.classList.remove('is-warn', 'is-ai', 'is-fever');
       if (cls) wrap.classList.add(cls.replace(/^\./, ''));
+    },
+
+    /* ═══════════════════════════ boss abilities ═══════════════════════════ */
+    aiProfile() {
+      const s = this.state;
+      const base = DIFFICULTY[s?.difficulty] || DIFFICULTY.medium;
+      return { ...base, ...(s?.aiProfile || {}) };
+    },
+
+    bossReady(id) {
+      const s = this.state;
+      const b = s && s.boss;
+      if (!b || !b.abilities.includes(id)) return false;
+      if (id === 'freeze') return !b.freezeQueued && !b.freezeActive && b.playerTurns >= (b.next.freeze || 0);
+      if (id === 'shuffle') return b.botTurns >= (b.next.shuffle || 0);
+      if (id === 'shadow') return b.botTurns >= (b.next.shadow || 0);
+      if (id === 'expand') return !b.expandUsed && b.botTurns >= (b.next.expand || 0) && s.deck.filter((c) => !c.matched).length >= 8;
+      return false;
+    },
+
+    chooseBossAbility() {
+      const s = this.state;
+      const b = s && s.boss;
+      if (!b) return null;
+      const ready = b.abilities.filter((id) => this.bossReady(id));
+      if (b.abilities.length === 1 && b.abilities[0] === 'freeze') return null;
+      if (!ready.length) return null;
+      if (b.abilities.length === 1) return ready[0];
+      const human = s.players[0];
+      const bot = s.players[1];
+      const lead = (human.score || 0) - (bot.score || 0);
+      if (ready.includes('freeze') && lead >= 80) return 'freeze';
+      if (ready.includes('shuffle') && lead >= 220) return 'shuffle';
+      if (ready.includes('shadow') && human.combo >= 2) return 'shadow';
+      if (ready.includes('expand') && s.deck.filter((c) => !c.matched).length <= 12) return 'expand';
+      if (ready.includes('shuffle')) return 'shuffle';
+      if (ready.includes('shadow')) return 'shadow';
+      if (ready.includes('expand')) return 'expand';
+      return ready[0];
+    },
+
+    maybeFreezePlayerTurn() {
+      const s = this.state;
+      const b = s && s.boss;
+      if (!b || !b.abilities.includes('freeze') || b.freezeActive) return false;
+      const direct = b.abilities.length === 1 && b.playerTurns >= (b.next.freeze || 0);
+      if (!b.freezeQueued && !direct) return false;
+      this.triggerFreeze();
+      return true;
+    },
+
+    triggerFreeze() {
+      const s = this.state;
+      if (!s || !s.boss || s.boss.freezeActive || s.phase === 'ended') return;
+      const b = s.boss;
+      b.freezeActive = true;
+      b.freezeQueued = false;
+      b.used.freeze += 1;
+      b.next.freeze = b.playerTurns + 5;
+      s.stats.bossAbilities += 1;
+      s.locked = true;
+      s.firstPick = null;
+      s.secondPick = null;
+      const overlay = $('#freezeOverlay');
+      if (overlay) {
+        overlay.hidden = false;
+        overlay.classList.remove('is-active');
+        void overlay.offsetWidth;
+        overlay.classList.add('is-active');
+      }
+      const bossName = s.players[1]?.name || 'الخصم';
+      this.showBannerFull('قدرة الخصم', 'تجميد الدور!', 'دورك التالي سيُتخطّى…', 'is-gold', 1700);
+      this.flashTurnMessage(`${bossName} جمّد دورك… انتظر لحظة`, 'is-warn');
+      this.spawnComboCallout('تجميد!', 'دور واحد فقط… ثم تعود', '#6f9bc7');
+      Sfx.power('freeze');
+      this.updateHUD();
+      this.updateAbilityUI();
+      this.later(() => {
+        if (!this.state || this.state !== s || s.phase === 'ended') return;
+        if (overlay) {
+          overlay.classList.remove('is-active');
+          overlay.hidden = true;
+        }
+        b.freezeActive = false;
+        s.locked = false;
+        this.switchTurn('boss-freeze');
+      }, 2450);
+    },
+
+    maybeUseBossAbility() {
+      const s = this.state;
+      const b = s && s.boss;
+      if (!b || s.phase === 'ended' || b.resolving || b.freezeActive) return false;
+      if (b.abilities.length === 1 && b.abilities[0] === 'freeze') return false;
+      let id = this.chooseBossAbility();
+      if (!id && this.bossReady('freeze')) id = 'freeze';
+      if (!id) return false;
+      if (id === 'freeze') {
+        if (s.current !== 1) return false;
+        b.freezeQueued = true;
+        b.used.freeze += 1;
+        b.next.freeze = b.playerTurns + 5;
+        b.resolving = true;
+        s.locked = true;
+        this.showBossCallout('freeze');
+        this.flashTurnMessage(`${s.players[1].name} يحضّر تجميد الدور…`, 'is-ai');
+        Sfx.power('freeze');
+        this.updateHUD();
+        this.later(() => {
+          if (!this.state || this.state !== s || s.phase === 'ended') return;
+          b.resolving = false;
+          s.locked = false;
+          this.hideBossCallout();
+          this.maybeRunAi();
+        }, 1050);
+        return true;
+      }
+      this.activateBossAbility(id);
+      return true;
+    },
+
+    showBossCallout(id) {
+      const callout = $('#bossAbilityCallout');
+      if (!callout) return;
+      const info = BOSS_ABILITY_INFO[id] || { title: 'قدرة الخصم', sub: '' };
+      const kicker = $('#bossAbilityKicker');
+      const title = $('#bossAbilityTitle');
+      const sub = $('#bossAbilitySub');
+      const boss = this.state?.players?.[1]?.name || 'الخصم';
+      if (kicker) kicker.textContent = `قدرة ${boss}`;
+      if (title) title.textContent = info.title;
+      if (sub) sub.textContent = info.sub;
+      callout.hidden = false;
+      callout.style.animation = 'none';
+      void callout.offsetWidth;
+      callout.style.animation = '';
+    },
+
+    hideBossCallout() {
+      const callout = $('#bossAbilityCallout');
+      if (callout) callout.hidden = true;
+    },
+
+    activateBossAbility(id) {
+      const s = this.state;
+      const b = s && s.boss;
+      if (!b || b.resolving) return;
+      b.resolving = true;
+      b.lastAbility = id;
+      s.locked = true;
+      this.showBossCallout(id);
+      const boss = s.players[1]?.name || 'الخصم';
+      this.flashTurnMessage(`${boss} يفعّل ${BOSS_ABILITY_INFO[id]?.title || 'قدرة'}…`, 'is-ai');
+      Sfx.power(id);
+      this.updateHUD();
+      this.updateAbilityUI();
+      const apply = () => {
+        if (!this.state || this.state !== s || s.phase === 'ended') return;
+        this.hideBossCallout();
+        if (id === 'shuffle') {
+          this.bossShuffleCards();
+          b.used.shuffle += 1;
+          b.next.shuffle = b.botTurns + 4;
+          this.showBannerFull('قدرة الخصم', 'تبديل البطاقات!', 'موقعان تبدّلا… دون كشف أي بطاقة', 'is-gold', 1500);
+        } else if (id === 'shadow') {
+          this.bossShadowWorld();
+          b.used.shadow += 1;
+          b.next.shadow = b.botTurns + 5;
+        } else if (id === 'expand') {
+          this.bossExpandBoard();
+          b.used.expand += 1;
+          b.expandUsed = true;
+          b.next.expand = 999;
+        }
+        s.stats.bossAbilities += 1;
+        b.resolving = false;
+        s.locked = false;
+        this.updateHUD();
+        this.updateAbilityUI();
+        if (s.phase === 'playing' && s.players[s.current]?.bot) this.maybeRunAi();
+      };
+      if (id === 'shadow') {
+        this.later(apply, 900);
+      } else {
+        this.later(apply, 950);
+      }
+    },
+
+    bossShuffleCards() {
+      const s = this.state;
+      if (!s) return;
+      const options = s.deck.map((card, i) => (!card.matched && !card.faceUp ? i : -1)).filter((i) => i >= 0);
+      if (options.length < 2) return;
+      const mixed = shuffle(options);
+      const a = mixed[0];
+      const b = mixed[1];
+      [s.deck[a], s.deck[b]] = [s.deck[b], s.deck[a]];
+      this.forgetCardIndex(a);
+      this.forgetCardIndex(b);
+      s.aiPlanned = null;
+      const shell = $('#boardShell');
+      if (shell) {
+        shell.classList.remove('is-boss-shuffling');
+        void shell.offsetWidth;
+        shell.classList.add('is-boss-shuffling');
+        this.later(() => shell.classList.remove('is-boss-shuffling'), 700);
+      }
+      this.renderBoard();
+      this.shakeBoard(true);
+      App.toast('<b>مشمش</b> بدّل بطاقتين… أعد ترتيب ذاكرتك', { icon: 'shuffle', duration: 2100 });
+    },
+
+    bossShadowWorld() {
+      const s = this.state;
+      if (!s) return;
+      const shell = $('#boardShell');
+      const world = $('#bossShadowWorld');
+      const screen = $('#screen-game');
+      if (!shell || !world) return;
+      shell.classList.add('is-shadowed');
+      if (screen) screen.classList.add('is-night');
+      world.classList.add('is-active');
+      this.flashTurnMessage('عالم الظلام… الشاشة كلها تختفي', 'is-warn');
+      this.spawnComboCallout('عالم الظلام!', 'الظلام مؤقت… ولا يوقف اللعب', '#a88ad8');
+      Sfx.power('shadow');
+      this.later(() => {
+        if (!this.state) return;
+        world.classList.add('is-restoring');
+        world.classList.remove('is-active');
+        shell.classList.remove('is-shadowed');
+        if (screen) screen.classList.remove('is-night');
+        this.later(() => {
+          if (!this.state) return;
+          world.classList.remove('is-restoring');
+        }, 1150);
+        if (this.state === s && s.phase === 'playing') this.flashTurnMessage('عاد النور… أكمل!', '');
+      }, 4600);
+    },
+
+    bossExpandBoard() {
+      const s = this.state;
+      if (!s) return;
+      const present = new Set(s.deck.map((card) => card.fruit));
+      const unused = Art.fruits.filter((fruit) => !present.has(fruit.id));
+      const fruits = shuffle(unused.length >= 3 ? unused : Art.fruits).slice(0, 3);
+      const nextPair = s.deck.reduce((max, card) => Math.max(max, Number(card.pairIndex) || 0), 0) + 1;
+      const added = [];
+      fruits.forEach((fruit, offset) => {
+        added.push({ fruit: fruit.id, golden: false, matched: false, faceUp: false, pairIndex: nextPair + offset });
+        added.push({ fruit: fruit.id, golden: false, matched: false, faceUp: false, pairIndex: nextPair + offset });
+      });
+      s.deck.push(...shuffle(added));
+      s.pairCount += 3;
+      const shell = $('#boardShell');
+      this.renderBoard();
+      this.updateHUD();
+      if (shell) {
+        shell.classList.remove('is-expanding');
+        void shell.offsetWidth;
+        shell.classList.add('is-expanding');
+        this.later(() => shell.classList.remove('is-expanding'), 900);
+      }
+      this.flashTurnMessage('بندق أضاف صفاً جديداً… اللوحة كبرت!', 'is-warn');
+      this.spawnComboCallout('لوحة أكبر!', 'ست بطاقات جديدة… تذكّرها جيداً', '#7f9b61');
+      Sfx.power('expand');
+      App.toast('<b>بندق</b> وسّع اللوحة — صف جديد من البطاقات', { icon: 'expand', duration: 2200 });
     },
 
     /* ═══════════════════════════ interaction ═══════════════════════════ */
@@ -506,7 +831,7 @@
         this.flipUp(index, source);
         Sfx.flip(index);
         this.updateAbilityUI();
-        this.flashTurnMessage(active.bot ? 'زعتر يقلب بطاقة…' : 'بطاقة واحدة… أكمل!', active.bot ? 'is-ai' : '');
+        this.flashTurnMessage(active.bot ? `${active.name} يقلب بطاقة…` : 'بطاقة واحدة… أكمل!', active.bot ? 'is-ai' : '');
         this.updateHUD();
         if (active.bot) this.maybeRunAi();
         return;
@@ -553,9 +878,31 @@
     remember(index) {
       const s = this.state;
       if (!s) return;
-      const fruit = s.deck[index].fruit;
-      if (!s.aiMemory.has(fruit)) s.aiMemory.set(fruit, new Set());
-      s.aiMemory.get(fruit).add(index);
+      const bot = s.players.find((p) => p.bot);
+      const card = s.deck[index];
+      if (!bot || !card) return;
+      const active = s.players[s.current];
+      const profile = this.aiProfile();
+      const observeChance = active.bot ? 1 : (profile.observeChance ?? profile.memoryChance ?? .7);
+      if (!active.bot && Math.random() > observeChance) return;
+      let fruitMemory = s.aiMemory.get(card.fruit);
+      if (!(fruitMemory instanceof Map)) {
+        fruitMemory = new Map();
+        s.aiMemory.set(card.fruit, fruitMemory);
+      }
+      const confidence = fruitMemory.get(index) || 0;
+      fruitMemory.set(index, Math.min(1, confidence + (active.bot ? .76 : .46)));
+    },
+
+    forgetCardIndex(index) {
+      const s = this.state;
+      if (!s) return;
+      s.aiMemory.forEach((fruitMemory, fruit) => {
+        if (fruitMemory instanceof Map) {
+          fruitMemory.delete(index);
+          if (!fruitMemory.size) s.aiMemory.delete(fruit);
+        }
+      });
     },
 
     resolvePair(a, b) {
@@ -577,6 +924,8 @@
       const s = this.state;
       const cards = [s.deck[a], s.deck[b]];
       cards.forEach((card) => { card.matched = true; });
+      this.forgetCardIndex(a);
+      this.forgetCardIndex(b);
       s.firstPick = null;
       s.secondPick = null;
       s.locked = true;
@@ -603,8 +952,10 @@
         s.arcade.timeLeft = Math.min(99, s.arcade.timeLeft + timeBonus);
         this.showTimeBonus(timeBonus);
       } else {
-        points = 100 * Math.min(5, player.combo);
-        if (fever) points *= 2;
+        let bonus = 0;
+        if (player.combo === 3) bonus += 50;
+        if (player.combo >= 5) bonus += 100;
+        points = 100 + bonus;
         if (golden) points += 150;
         player.score += points;
         s.timeLeft = Math.min(s.turnMax, s.timeLeft + (fever ? 4 : 2));
@@ -657,7 +1008,7 @@
         s.secondPick = null;
         this.updateHUD();
         this.updateAbilityUI();
-        this.flashTurnMessage(player.bot ? 'زعتر يواصل…' : `أحسنت يا ${player.name}! أكمل`, '');
+        this.flashTurnMessage(player.bot ? `${player.name} يواصل…` : `أحسنت يا ${player.name}! أكمل`, '');
         if (player.bot) this.maybeRunAi();
       }, 1080);
     },
@@ -728,14 +1079,14 @@
         peekBtn.disabled = !canPeek;
         peekBtn.classList.toggle('is-ready', canPeek);
         peekBtn.setAttribute('aria-label', `لمحة القطة — تكشف ٤ بطاقات مقابل طاقتين. طاقتك ${num(active.energy)} من ٥`);
-        peekBtn.title = active.bot ? 'دور زعتر الآن' : active.energy < ABILITY_COST.peek ? 'تحتاج طاقتين' : 'لمحة القطة (٢ طاقة)';
+        peekBtn.title = active.bot ? `دور ${active.name} الآن` : active.energy < ABILITY_COST.peek ? 'تحتاج طاقتين' : 'لمحة القطة (٢ طاقة)';
       }
       if (shuffleBtn) {
         shuffleBtn.disabled = !canShuffle;
         shuffleBtn.classList.toggle('is-ready', canShuffle);
         shuffleBtn.classList.toggle('is-arcade', s.mode === 'arcade');
         shuffleBtn.setAttribute('aria-label', s.mode === 'arcade' ? 'خلطة المخالب — تخلط البطاقات وتضيف ٦ ثوانٍ مقابل ٣ طاقة' : 'خلطة المخالب — تخلط البطاقات وتضيف ٤ ثوانٍ مقابل ٣ طاقة');
-        shuffleBtn.title = active.bot ? 'دور زعتر الآن' : s.firstPick !== null ? 'أكمل دورك أولًا' : active.energy < ABILITY_COST.shuffle ? 'تحتاج ٣ طاقة' : 'خلطة المخالب (٣ طاقة)';
+        shuffleBtn.title = active.bot ? `دور ${active.name} الآن` : s.firstPick !== null ? 'أكمل دورك أولًا' : active.energy < ABILITY_COST.shuffle ? 'تحتاج ٣ طاقة' : 'خلطة المخالب (٣ طاقة)';
       }
       this.updateEnergyPips();
     },
@@ -942,7 +1293,7 @@
           turnText.textContent = s.arcade.timeLeft <= 10 ? 'الوقت يلمع… أسرع!' : `الموجة ${num(s.arcade.wave)} — طابق بسرعة!`;
           turnWrap.classList.toggle('is-warn', s.arcade.timeLeft <= 10);
         } else if (active.bot) {
-          turnText.textContent = 'زعتر يفكر…';
+          turnText.textContent = `${active.name} يفكر…`;
           turnWrap.classList.remove('is-warn', 'is-fever');
           turnWrap.classList.add('is-ai');
         } else if (s.firstPick !== null) {
@@ -993,17 +1344,26 @@
     knownIndicesFor(fruit) {
       const s = this.state;
       if (!s) return [];
-      const set = s.aiMemory.get(fruit);
-      if (!set) return [];
-      return [...set].filter((i) => s.deck[i] && !s.deck[i].matched && !s.deck[i].faceUp);
+      const memory = s.aiMemory.get(fruit);
+      if (!(memory instanceof Map)) return [];
+      const min = this.aiProfile().confidenceMin ?? .5;
+      return [...memory.entries()]
+        .filter(([i, confidence]) => confidence >= min && s.deck[i] && !s.deck[i].matched && !s.deck[i].faceUp)
+        .sort((a, b) => b[1] - a[1])
+        .map(([i]) => i);
     },
 
     knownPairs() {
       const s = this.state;
       const result = [];
       if (!s) return result;
-      s.aiMemory.forEach((set, fruit) => {
-        const valid = [...set].filter((i) => s.deck[i] && !s.deck[i].matched);
+      const min = this.aiProfile().confidenceMin ?? .5;
+      s.aiMemory.forEach((memory, fruit) => {
+        if (!(memory instanceof Map)) return;
+        const valid = [...memory.entries()]
+          .filter(([i, confidence]) => confidence >= min && s.deck[i] && !s.deck[i].matched)
+          .sort((a, b) => b[1] - a[1])
+          .map(([i]) => i);
         if (valid.length >= 2) result.push([valid[0], valid[1]]);
       });
       return result;
@@ -1012,7 +1372,7 @@
     chooseAiPair() {
       const s = this.state;
       if (!s) return [];
-      const diff = DIFFICULTY[s.difficulty] || DIFFICULTY.medium;
+      const diff = this.aiProfile();
       const available = this.availableIndices();
       if (!available.length) return [];
       const pairs = this.knownPairs();
@@ -1021,7 +1381,9 @@
         if (pair.length === 2) return pair;
       }
       const unseen = available.filter((i) => {
-        for (const set of s.aiMemory.values()) if (set.has(i)) return false;
+        for (const memory of s.aiMemory.values()) {
+          if (memory instanceof Map && (memory.get(i) || 0) >= (diff.confidenceMin || .5)) return false;
+        }
         return true;
       });
       let first;
@@ -1040,7 +1402,7 @@
       const active = s.players[s.current];
       if (!active || !active.bot) return;
       if (s.aiTimer) return;
-      const diff = DIFFICULTY[s.difficulty] || DIFFICULTY.medium;
+      const diff = this.aiProfile();
       const delay = s.firstPick === null ? diff.firstThink : diff.secondThink;
       s.aiThinking = true;
       this.updateHUD();
@@ -1089,7 +1451,7 @@
       Sfx.fever();
       this.flashTurnMessage(`وضع البرق! ${player.name} يشتعل ⚡`, 'is-fever');
       this.flashScreen();
-      this.spawnComboCallout('وضع البرق!', `سلسلة ${num(player.combo)} — النقاط تتضاعف`, '#b78133');
+      this.spawnComboCallout('وضع البرق!', `سلسلة ${num(player.combo)} — مكافآت إضافية`, '#b78133');
       this.shakeBoard();
     },
 
@@ -1367,13 +1729,36 @@
       this.clearTimers();
       $('#countdownOverlay').hidden = true;
       $('#boardBanner').hidden = true;
-      $('#screen-game').classList.remove('is-fever');
+      $('#screen-game').classList.remove('is-fever', 'is-night');
+      $('#boardShell')?.classList.remove('is-shadowed');
+      $('#bossShadowWorld')?.classList.remove('is-active', 'is-restoring');
+      const freezeOverlay = $('#freezeOverlay');
+      if (freezeOverlay) { freezeOverlay.hidden = true; freezeOverlay.classList.remove('is-active'); }
+      const bossCallout = $('#bossAbilityCallout');
+      if (bossCallout) bossCallout.hidden = true;
       const winner = s.players[winnerIndex] || s.players[0];
+      if (s.mode !== 'arcade' && winner) {
+        winner.score += 250;
+        s.stats.victoryBonus = 250;
+      }
       const store = App.save();
       const isAi = s.mode === 'ai';
+      const isStory = s.mode === 'story';
       const humanWon = winnerIndex === 0;
+      let storyInfo = null;
+      if (isStory && window.MMStory && window.MMStory.onGameEnd) {
+        storyInfo = window.MMStory.onGameEnd({
+          chapterId: s.storyChapter,
+          won: humanWon,
+          playerScore: s.players[0]?.score || 0,
+          enemyScore: s.players[1]?.score || 0,
+          stats: s.stats
+        });
+      }
+      this.storyResult = storyInfo;
       let stars;
-      if (isAi) stars = humanWon ? 6 : 2;
+      if (isStory && storyInfo) stars = storyInfo.rewardStars;
+      else if (isAi) stars = humanWon ? 6 : 2;
       else stars = winnerIndex === 0 ? 5 : 4;
       store.stars = Math.max(0, Number(store.stars || 0) + stars);
       store.gamesPlayed = (store.gamesPlayed || 0) + 1;
@@ -1385,7 +1770,20 @@
       let title;
       let sub;
       let eyebrow;
-      if (isAi) {
+      if (isStory) {
+        const chapter = storyInfo?.chapter || { title: s.chapterTitle, tag: s.chapterTag };
+        if (humanWon) {
+          title = `أتممت ${chapter.title}!`;
+          sub = storyInfo?.final
+            ? 'وصلت إلى قمة الذاكرة… لكن الحكاية لم تنتهِ بعد.'
+            : 'الذاكرة انتصرت… والفصل التالي ينتظرك.';
+          eyebrow = `${chapter.tag} • تقييم ${num(storyInfo?.rating || 1)} من ٣ نجوم`;
+        } else {
+          title = `${chapter.title}… لم تنتهِ بعد`;
+          sub = 'الخصم كان أسرع هذه المرة. ذاكرتك أقوى من أن تستسلم.';
+          eyebrow = `${chapter.tag} • حاول مجددًا`;
+        }
+      } else if (isAi) {
         if (humanWon) {
           title = `هزمت زعتر يا ${winner.name}!`;
           sub = 'ذاكرة أسرع من ذكاء القط. إنجاز يستحق الاحتفال.';
@@ -1412,10 +1810,12 @@
         { icon: 'i-paw', value: `${num(s.players[0].pairs)} / ${num(s.players[1].pairs)}`, label: 'الأزواج' },
         { icon: 'i-bolt', value: `×${num(Math.min(5, Math.max(1, s.stats.maxCombo)))}`, label: 'أطول سلسلة' },
         { icon: 'i-eye', value: pctText(acc), label: 'دقة المطابقة' },
-        { icon: 'i-sparkle', value: num(s.stats.peeks + s.stats.shuffles), label: 'قدرات مستخدمة' }
+        isStory
+          ? { icon: 'i-crown', value: num(s.stats.bossAbilities || 0), label: 'قدرات الخصم' }
+          : { icon: 'i-sparkle', value: num(s.stats.peeks + s.stats.shuffles), label: 'قدرات مستخدمة' }
       ];
-      this.lastResult = { type: 'duel', winnerIndex, config: JSON.parse(JSON.stringify(this.lastConfig || {})), stats: s.stats };
-      const isHumanWin = isAi ? humanWon : true;
+      this.lastResult = { type: isStory ? 'story' : 'duel', winnerIndex, storyResult: storyInfo, config: JSON.parse(JSON.stringify(this.lastConfig || {})), stats: s.stats };
+      const isHumanWin = isStory || isAi ? humanWon : true;
       if (isHumanWin) Sfx.win(); else Sfx.lose();
       this.showResults({
         eyebrow,
@@ -1426,9 +1826,16 @@
         stats,
         reward: stars,
         newBest: false,
-        type: isAi && !humanWon ? 'ai-loss' : 'win',
-        confetti: true
+        type: isStory ? (humanWon ? 'story-win' : 'story-loss') : isAi && !humanWon ? 'ai-loss' : 'win',
+        confetti: isHumanWin,
+        story: !!storyInfo,
+        chapterStars: storyInfo?.rating || 0,
+        chapterId: s.storyChapter,
+        finalChapter: !!storyInfo?.final
       });
+      if (storyInfo && window.MMStory?.afterResults) {
+        window.MMStory.afterResults(storyInfo);
+      }
     },
 
     finishArcade() {
@@ -1516,6 +1923,16 @@
       const catWrap = $('#resultCat');
       if (catWrap) catWrap.innerHTML = Art.catAvatarSvg(data.cat || Art.catById('lulu'));
       $('#resultScoreline').innerHTML = data.scoreline || '';
+      const chapterStars = $('#resultChapterStars');
+      if (chapterStars) {
+        if (data.story) {
+          chapterStars.hidden = false;
+          chapterStars.innerHTML = [0, 1, 2].map((i) => `<i class="${i < (data.chapterStars || 0) ? 'is-full' : ''}${i < (data.chapterStars || 0) ? ' is-new' : ''}" style="animation-delay:${.16 + i * .12}s"></i>`).join('');
+        } else {
+          chapterStars.hidden = true;
+          chapterStars.innerHTML = '';
+        }
+      }
       $('#resultStats').innerHTML = (data.stats || []).map((stat) => `<div class="result-stat">
         <svg class="ico"><use href="#${stat.icon}"/></svg><div><b>${stat.value}</b><span>${esc(stat.label)}</span></div>
       </div>`).join('');
@@ -1523,7 +1940,15 @@
       reward.classList.toggle('is-empty', !data.reward);
       reward.innerHTML = `<svg class="ico"><use href="#i-star"/></svg> <b>+${num(data.reward || 0)} نجوم</b><span>أُضيفت إلى رصيدك</span>`;
       const btnRematchLabel = $('#btnRematch .btn-label') || $('#btnRematch');
-      if (btnRematchLabel) btnRematchLabel.textContent = data.type === 'arcade' ? 'جولة برق أخرى' : 'إعادة التحدي';
+      if (btnRematchLabel) btnRematchLabel.textContent = data.type === 'arcade' ? 'جولة برق أخرى' : data.story ? 'أعد الفصل' : 'إعادة التحدي';
+      const storyNext = $('#btnStoryNext');
+      const storyMap = $('#btnStoryMap');
+      const changeMode = $('#btnChangeMode');
+      const home = $('#btnResultsHome');
+      if (storyNext) { storyNext.hidden = true; storyNext.disabled = false; }
+      if (storyMap) { storyMap.hidden = true; storyMap.disabled = false; }
+      if (changeMode) changeMode.hidden = false;
+      if (home) home.hidden = false;
       Sfx.setScene('results');
       if (data.confetti) this.startConfetti();
       this.tempResultsData = data;
@@ -1536,6 +1961,7 @@
       this.stopConfetti();
       if (this.state) this.state.phase = 'ended';
       this.state = null;
+      window.MMStory?.closeStage?.(true);
       UI.closeAll();
       this.activateScreen('screen-menu');
       document.body.classList.remove('in-game');

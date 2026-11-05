@@ -19,6 +19,19 @@
     lastTickAt: 0,
     _musicElements: {},
     _duckedFor: null,
+    storyTheme: null,
+    storyAudio: null,
+    _storyAudioCache: {},
+    storyThemeMap: {
+      intro: 'story-intro',
+      tutorial: 'story-intro',
+      zaatar: 'story-zaatar',
+      luz: 'story-luz',
+      mishmish: 'story-mishmish',
+      zill: 'story-zill',
+      bundoq: 'story-bundoq',
+      final: 'story-final'
+    },
 
     init() {
       this._musicElements.menu = document.getElementById('musicMenu');
@@ -126,8 +139,14 @@
     },
 
     setScene(scene) {
-      if (this.scene === scene) return;
+      if (this.scene === scene && !this.storyTheme) return;
       this.scene = scene;
+      if (scene === 'menu' && this.storyTheme) {
+        const oldStory = this.storyAudio;
+        this.storyTheme = null;
+        this.storyAudio = null;
+        if (oldStory) this.fadeTrack(oldStory, 0, 0.65, true);
+      }
       this.playCurrentScene();
     },
 
@@ -136,9 +155,63 @@
       return 'menu';
     },
 
+    /* Story chapters use their own original loops instead of the menu/game beds. */
+    setStoryTheme(chapterId) {
+      const theme = this.storyThemeMap[chapterId] || 'story-intro';
+      this.storyTheme = theme;
+      if (this.musicEnabled) this._playStoryTheme(theme);
+    },
+
+    clearStoryTheme() {
+      if (!this.storyTheme && !this.storyAudio) return;
+      const old = this.storyAudio;
+      this.storyTheme = null;
+      this.storyAudio = null;
+      if (old) this.fadeTrack(old, 0, 0.65, true);
+      if (this.activeTrack === old) this.activeTrack = null;
+    },
+
+    _ensureStoryAudio(theme) {
+      let el = this._storyAudioCache[theme];
+      if (el) return el;
+      el = new Audio(`assets/audio/${theme}.mp3`);
+      el.loop = true;
+      el.preload = 'auto';
+      el.volume = 0;
+      el.addEventListener('error', () => {
+        console.warn('Meow Memory: story theme unavailable for', theme);
+      });
+      this._storyAudioCache[theme] = el;
+      return el;
+    },
+
+    _playStoryTheme(theme = this.storyTheme) {
+      if (!this.musicEnabled || !this.unlocked || !theme) return;
+      const el = this._ensureStoryAudio(theme);
+      const previousStory = this.storyAudio;
+      const previousScene = this.activeTrack && this.activeTrack !== el ? this.activeTrack : null;
+      if (previousStory === el) {
+        this.activeTrack = el;
+        if (el.paused) this._safePlay(el);
+        this.fadeTrack(el, this._targetVolume(), 0.5);
+        return;
+      }
+      this.storyAudio = el;
+      this.activeTrack = el;
+      if (previousStory) this.fadeTrack(previousStory, 0, 0.7, true);
+      if (previousScene && previousScene !== previousStory) this.fadeTrack(previousScene, 0, 0.7, true);
+      el.volume = 0;
+      this._safePlay(el);
+      this.fadeTrack(el, this._targetVolume(), 0.95);
+    },
+
     playCurrentScene(force) {
       if (!this.musicEnabled) return;
       if (!this.unlocked) return; // waits for a gesture
+      if (this.storyTheme && this.scene !== 'menu') {
+        this._playStoryTheme(this.storyTheme);
+        return;
+      }
       const name = this.sceneTrackName();
       const el = this._musicElements[name];
       if (!el) return;
@@ -351,10 +424,38 @@
         }
         [392, 523, 659].forEach((f, i) => this.tone({ freq: f, dur: 0.18, type: 'triangle', vol: 0.045, when: 0.28 + i * .06 }));
         this.tone({ freq: 420, dur: 0.45, type: 'sine', vol: 0.02, glide: 820, when: 0.25 });
+      } else if (kind === 'freeze') {
+        [1568, 2093, 2637].forEach((f, i) => this.reverbTone({ freq: f, dur: 0.75, vol: 0.045, when: i * 0.06, pan: i % 2 ? .22 : -.22 }));
+        this.tone({ freq: 880, dur: 0.8, type: 'sine', vol: 0.045, glide: 220, attack: .02 });
+        this.noise({ dur: 0.7, vol: 0.03, hp: 4200, lp: 12000, when: 0.02 });
+        this.tone({ freq: 110, dur: 0.5, type: 'triangle', vol: 0.04, when: .1, glide: 70 });
+      } else if (kind === 'shadow') {
+        this.tone({ freq: 92, dur: 1.25, type: 'sawtooth', vol: 0.04, glide: 54, attack: .06 });
+        this.tone({ freq: 184, dur: 1.1, type: 'sine', vol: 0.025, glide: 116, attack: .08 });
+        this.noise({ dur: 1.2, vol: 0.035, hp: 120, lp: 900, when: .03 });
+        [392, 466.16, 587.33].forEach((f, i) => this.reverbTone({ freq: f, dur: 0.8, vol: 0.022, when: .25 + i * .08, pan: -.2 + i * .2 }));
+      } else if (kind === 'expand') {
+        [392, 523.25, 659.25, 783.99, 1046.5].forEach((f, i) => this.reverbTone({ freq: f, dur: 0.42, vol: 0.05, when: i * .06, pan: -.2 + i * .1 }));
+        this.noise({ dur: 0.45, vol: 0.035, hp: 2200, lp: 9000, when: .04 });
+        this.tone({ freq: 196, dur: 0.55, type: 'triangle', vol: 0.04, glide: 392, when: .05 });
       } else {
         [587, 740, 880, 1175].forEach((f, i) => this.reverbTone({ freq: f, dur: 0.4, vol: 0.045, when: i * 0.055, pan: i % 2 ? .2 : -.2 }));
         this.noise({ dur: 0.4, vol: 0.028, hp: 2600, lp: 9500, when: 0.03 });
       }
+    },
+
+    finalChallenge() {
+      if (!this._canSfx()) return;
+      this.tone({ freq: 73.42, dur: 1.8, type: 'sine', vol: 0.13, glide: 49, attack: 0.02 });
+      this.tone({ freq: 146.83, dur: 1.55, type: 'sawtooth', vol: 0.035, glide: 98, attack: 0.1 });
+      this.noise({ dur: 1.7, vol: 0.035, hp: 120, lp: 1600, when: 0.02 });
+      [146.83, 174.61, 220, 293.66].forEach((f, i) => {
+        this.tone({ freq: f, dur: 0.75, type: 'triangle', vol: 0.045, when: 0.38 + i * 0.09 });
+        this.reverbTone({ freq: f * 2, dur: 0.85, vol: 0.028, when: 0.4 + i * 0.09, pan: -0.3 + i * 0.2 });
+      });
+      [1046.5, 1318.5, 1568, 2093].forEach((f, i) =>
+        this.tone({ freq: f, dur: 0.65, type: 'sine', vol: 0.022, when: 1.35 + i * 0.08, pan: -0.2 + i * 0.13 })
+      );
     },
 
     fever() {

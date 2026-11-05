@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="css/game.css">
   <link rel="stylesheet" href="css/gameplay.css">
   <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/story.css">
 </head>
 <body>
   <!-- ───────────────────────── shared icon library ───────────────────────── -->
@@ -56,6 +57,7 @@
     <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M3 12h18M14 5l7 7-7 7"/></symbol>
     <symbol id="i-touch" viewBox="0 0 24 24"><path d="M9 10.5V6a2 2 0 0 1 4 0v6.5M13 10.5V4.5a2 2 0 0 1 4 0V12M17 9.5a2 2 0 0 1 4 0V15c0 4.4-3.6 8-8 8h-2.5c-2 0-3.6-1-4.7-2.7L3.1 16c-.6-1-.2-2 .7-2.4.8-.4 1.6-.1 2.2.7L9 18"/></symbol>
     <symbol id="i-expand" viewBox="0 0 24 24"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></symbol>
+    <symbol id="i-map" viewBox="0 0 24 24"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"/><path d="M9 3v15M15 6v15"/></symbol>
     <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 10.5V17M12 7v.2"/></symbol>
     <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.5 0 2.2-1 1.6-2.2-.6-1.2.2-2.3 1.5-2.3h1.7A4.2 4.2 0 0 0 21 12.3C21 7.2 17.1 3 12 3Z"/><circle cx="7.5" cy="10" r="1.2" fill="currentColor"/><circle cx="11" cy="6.7" r="1.2" fill="currentColor"/><circle cx="15.5" cy="7.5" r="1.2" fill="currentColor"/><circle cx="17.5" cy="11.5" r="1.2" fill="currentColor"/></symbol>
   </svg>
@@ -222,6 +224,14 @@
         <div class="game-aura" aria-hidden="true"></div>
         <div class="game-paw-bg" aria-hidden="true"><svg class="ico"><use href="#i-paw"/></svg></div>
         <div class="game-shell">
+          <div class="boss-shadow-world" id="bossShadowWorld" aria-hidden="true">
+            <span class="shadow-vignette"></span>
+            <span class="shadow-eye eye-l"></span>
+            <span class="shadow-eye eye-r"></span>
+            <span class="shadow-mist m1"></span>
+            <span class="shadow-mist m2"></span>
+            <span class="shadow-whisper">النور لن يساعدك هنا…</span>
+          </div>
           <header class="game-top">
             <div class="game-top-start">
               <button class="game-icon" id="btnGamePause" aria-label="إيقاف مؤقت" title="إيقاف مؤقت">
@@ -317,6 +327,20 @@
               <div class="fever-glow" aria-hidden="true"></div>
               <div class="board" id="board" role="group" aria-label="بطاقات الذاكرة"></div>
               <div class="effect-layer" id="effectLayer" aria-hidden="true"></div>
+              <div class="freeze-overlay" id="freezeOverlay" hidden>
+                <span class="freeze-ring r1"></span>
+                <span class="freeze-ring r2"></span>
+                <span class="freeze-crystal c1"></span>
+                <span class="freeze-crystal c2"></span>
+                <span class="freeze-crystal c3"></span>
+                <strong>دورك مُجمَّد!</strong>
+                <span>قدرة لوز أوقفت دورك مرة واحدة</span>
+              </div>
+              <div class="boss-ability-callout" id="bossAbilityCallout" hidden>
+                <span class="boss-ability-kicker" id="bossAbilityKicker">قدرة الخصم</span>
+                <strong id="bossAbilityTitle">استعد!</strong>
+                <span class="boss-ability-sub" id="bossAbilitySub">البطاقات على وشك أن تتغير…</span>
+              </div>
               <div class="board-banner" id="boardBanner" hidden>
                 <span class="banner-kicker" id="bannerKicker">استعد</span>
                 <strong id="bannerTitle">ابدأ المطابقة!</strong>
@@ -373,12 +397,15 @@
             <h2 class="results-title" id="resultTitle">مبروك يا لولو!</h2>
             <p class="results-sub" id="resultSub">قلبٌ سريع… وذاكرة أسرع.</p>
             <div class="result-scoreline" id="resultScoreline"></div>
+            <div class="result-chapter-stars" id="resultChapterStars" hidden></div>
             <div class="result-stats" id="resultStats"></div>
             <div class="result-reward" id="resultReward"><svg class="ico"><use href="#i-star"/></svg> <b>+٥ نجوم</b><span>أُضيفت إلى رصيدك</span></div>
             <div class="results-actions">
               <button class="btn btn-primary" id="btnRematch"><svg class="ico"><use href="#i-refresh"/></svg> <span class="btn-label">إعادة التحدي</span></button>
               <button class="btn btn-frost" id="btnChangeMode"><svg class="ico"><use href="#i-users"/></svg> <span class="btn-label">وضع آخر</span></button>
+              <button class="btn btn-story" id="btnStoryNext" hidden><span class="btn-label">الفصل التالي</span> <svg class="ico"><use href="#i-arrow-left"/></svg></button>
             </div>
+            <button class="results-story-link" id="btnStoryMap" hidden><svg class="ico"><use href="#i-map"/></svg> العودة إلى خريطة القصة</button>
             <button class="results-home-link" id="btnResultsHome"><svg class="ico"><use href="#i-home"/></svg> العودة إلى القائمة</button>
           </div>
           <p class="results-love">كل جولة معك… أحلى من اللي قبلها <svg class="ico"><use href="#i-heart"/></svg></p>
@@ -397,8 +424,25 @@
           <div class="modal-head">
             <span class="modal-kicker"><span class="kicker-line"></span> ماذا نلعب اليوم؟</span>
             <h2 id="modesTitle">اختر مواجهتك</h2>
-            <p>ثلاث طرق للعب… وقلب واحد سريع. كل وضع له إيقاعه الخاص.</p>
+            <p>وضع قصة كامل، أو مواجهة سريعة، أو تحدٍّ ضد القطط. كل طريق له إيقاعه الخاص.</p>
           </div>
+          <button class="story-banner" id="btnStoryMode" type="button">
+            <span class="story-banner-glow" aria-hidden="true"></span>
+            <span class="story-banner-art" aria-hidden="true">
+              <span class="story-banner-cat sb1" data-cat-avatar="meow"></span>
+              <span class="story-banner-cat sb2" data-cat-avatar="luz"></span>
+              <span class="story-banner-cat sb3" data-cat-avatar="zill"></span>
+              <span class="story-banner-cat sb4" data-cat-avatar="bundoq"></span>
+              <span class="story-banner-star">✦</span>
+            </span>
+            <span class="story-banner-copy">
+              <span class="story-banner-kicker"><svg class="ico"><use href="#i-crown"/></svg> وضع القصة • ٧ فصول</span>
+              <strong>رحلة الذاكرة</strong>
+              <span>واجه زعتر، لوز، مشمش، ظل، بندوق… ثم مياو ميموري نفسه.</span>
+            </span>
+            <span class="story-banner-progress" id="storyBannerProgress">٠ / ٧ فصول</span>
+            <span class="story-banner-go">ابدأ الرحلة <svg class="ico"><use href="#i-arrow-left"/></svg></span>
+          </button>
           <div class="mode-grid">
             <button class="mode-card mode-duel" data-mode="duel">
               <span class="mode-tag">الأكثر حماسًا</span>
@@ -452,6 +496,49 @@
           <div class="mode-footer">
             <button class="subtle-btn" data-open="guide"><svg class="ico"><use href="#i-book"/></svg> أول مرة تلعب؟ افتح الدليل السريع</button>
             <span class="mode-footer-note">لا حاجة لإنترنت — كل شيء جاهز هنا.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- story map -->
+      <div class="modal story-modal-wrap" id="modalStory" role="dialog" aria-modal="true" aria-labelledby="storyTitle">
+        <div class="modal-card story-modal">
+          <button class="modal-close" data-close aria-label="إغلاق"><svg class="ico"><use href="#i-close"/></svg></button>
+          <div class="story-modal-head">
+            <div>
+              <span class="modal-kicker"><span class="kicker-line"></span> MEOW MEMORY • STORY MODE</span>
+              <h2 id="storyTitle">رحلة الذاكرة</h2>
+              <p>سبعة فصول، ستة خصوم، وذكرى واحدة تنتظر أن تُستعاد. كل فصل يفتح الذي بعده.</p>
+            </div>
+            <div class="story-globe" aria-hidden="true">
+              <span class="story-globe-ring"></span>
+              <span class="story-globe-star s1">✦</span>
+              <span class="story-globe-star s2">✧</span>
+              <span class="story-globe-cat" data-cat-avatar="meow"></span>
+            </div>
+          </div>
+          <div class="story-progress-bar">
+            <div class="story-progress-stat">
+              <span class="story-progress-icon"><svg class="ico"><use href="#i-crown"/></svg></span>
+              <div><b id="storyProgressStars">٠ / ٢١</b><span>نجوم الفصول</span></div>
+            </div>
+            <div class="story-progress-track"><span id="storyProgressFill"></span></div>
+            <div class="story-progress-stat is-align-end">
+              <div><b id="storyProgressChapters">٠ / ٧</b><span>فصول مكتملة</span></div>
+              <span class="story-progress-icon"><svg class="ico"><use href="#i-sparkle"/></svg></span>
+            </div>
+          </div>
+          <div class="story-map-wrap">
+            <div class="story-map-path" aria-hidden="true"></div>
+            <div class="story-map" id="storyMap"></div>
+          </div>
+          <div class="story-footer">
+            <button class="btn btn-primary story-continue" id="btnStoryContinue" type="button">
+              <svg class="ico"><use href="#i-play"/></svg>
+              <span class="btn-label">ابدأ الحكاية</span>
+            </button>
+            <button class="subtle-btn" id="btnStoryGuide" type="button"><svg class="ico"><use href="#i-book"/></svg> كيف يعمل وضع القصة؟</button>
+            <span class="story-footer-note" id="storyFooterNote">التقدم يُحفظ تلقائيًا على هذا الجهاز.</span>
           </div>
         </div>
       </div>
@@ -613,17 +700,17 @@
           <div class="about-cat" data-mascot></div>
           <span class="modal-kicker"><span class="kicker-line"></span> عن اللعبة</span>
           <h2 id="aboutTitle">مياو ميموري</h2>
-          <p class="about-lead">ذاكرة أنيقة… بقلب أكشن.<br>كل تفصيلة فيها صُنعت لتكون لك.</p>
+          <p class="about-lead">ذاكرة أنيقة… وحكاية كاملة.<br>سبعة فصول، زعماء، وقدرات تُغيّر كل جولة.</p>
           <div class="about-facts">
-            <div><svg class="ico"><use href="#i-users"/></svg><b>٣ أوضاع</b><span>مواجهة، ذكاء آلي، وتحدي وقت</span></div>
-            <div><svg class="ico"><use href="#i-palette"/></svg><b>٥ قطط</b><span>شخصيات ونجوم تُجمع مع كل فوز</span></div>
-            <div><svg class="ico"><use href="#i-music"/></svg><b>موسيقى أصلية</b><span>مقطوعتان وترايلر سينمائي</span></div>
-            <div><svg class="ico"><use href="#i-film"/></svg><b>إعلان خاص</b><span>فيلم قصير مصنوع بكل التفاصيل</span></div>
+            <div><svg class="ico"><use href="#i-users"/></svg><b>٤ أوضاع</b><span>قصة، مواجهة، ذكاء آلي، وتحدي وقت</span></div>
+            <div><svg class="ico"><use href="#i-crown"/></svg><b>٧ فصول</b><span>خريطة قصة، نجوم، وزعماء بقدرات خاصة</span></div>
+            <div><svg class="ico"><use href="#i-palette"/></svg><b>٥ قطط</b><span>شخصيات قابلة للعب و٤ زعماء في الحكاية</span></div>
+            <div><svg class="ico"><use href="#i-music"/></svg><b>موسيقى أصلية</b><span>أجواء مختلفة لكل فصل، ومؤثرات كاملة</span></div>
           </div>
           <div class="about-tech">
             <span>التصميم والرسم والبرمجة: فريق مياو ميموري</span>
             <span>جميع الأصوات والموسيقى: مياو ميموري</span>
-            <span>الإصدار ١.٠ • صُنعت بكل حب</span>
+            <span>الإصدار ١.١ • صُنعت بكل حب</span>
           </div>
           <button class="btn btn-primary" data-close>إغلاق والذهاب للعب <svg class="ico"><use href="#i-paw"/></svg></button>
         </div>
@@ -698,6 +785,62 @@
     <div class="celebration-hearts" id="celebrationHearts" aria-hidden="true"></div>
   </div>
 
+  <!-- ═════════════════════════ STORY CINEMATICS ═════════════════════════ -->
+  <div class="story-stage" id="storyStage" role="dialog" aria-modal="true" aria-label="مشهد القصة" hidden>
+    <div class="story-stage-sky" aria-hidden="true">
+      <span class="story-sky-star s1">✦</span><span class="story-sky-star s2">✧</span>
+      <span class="story-sky-star s3">✦</span><span class="story-sky-star s4">✧</span>
+      <span class="story-sky-star s5">✦</span><span class="story-sky-orb"></span>
+      <span class="story-sky-hill h1"></span><span class="story-sky-hill h2"></span>
+      <span class="story-sky-mist"></span>
+    </div>
+    <div class="story-stage-vignette" aria-hidden="true"></div>
+    <div class="story-intro-title" id="storyIntroTitle" aria-hidden="true">
+      <span>MEOW&nbsp;MEMORY</span>
+      <strong>رحلة الذاكرة</strong>
+      <em>كل ذكرى لها قلب… وكل قلب له حارس</em>
+    </div>
+    <div class="story-stage-content">
+      <div class="story-portrait-wrap">
+        <span class="story-portrait-halo" aria-hidden="true"></span>
+        <span class="story-portrait-ring" aria-hidden="true"></span>
+        <div class="story-portrait" id="storyPortrait"></div>
+        <span class="story-expression-chip" id="storyExpressionChip">هادئ</span>
+      </div>
+      <div class="story-dialogue-panel">
+        <div class="story-speaker-row">
+          <span class="story-speaker" id="storySpeakerName">مياو ميموري</span>
+          <span class="story-chapter-tag" id="storyChapterTag">البداية</span>
+        </div>
+        <p class="story-dialogue-text" id="storyDialogueText"></p>
+        <div class="story-dialogue-footer">
+          <span class="story-dialogue-hint">اضغط للمتابعة</span>
+          <div class="story-dialogue-actions">
+            <button class="subtle-btn" id="storyDialogueSkip" type="button">تخطي المشهد</button>
+            <button class="btn btn-primary" id="storyDialogueNext" type="button">متابعة <svg class="ico"><use href="#i-arrow-left"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="story-ending-card" id="storyEndingCard" hidden>
+      <span class="ending-kicker">STORY COMPLETED</span>
+      <h2>MEMORY MASTER</h2>
+      <p>YOU DID IT!</p>
+      <div class="ending-cats" id="endingCats"></div>
+      <p class="ending-copy">جمعت كل الذكريات… وأصبحت أنت الحارس الجديد لحكاية مياو ميموري.</p>
+      <div class="ending-actions">
+        <button class="btn btn-primary" id="btnEndingMap" type="button"><svg class="ico"><use href="#i-map"/></svg> خريطة الفصول</button>
+        <button class="btn btn-frost" id="btnEndingHome" type="button"><svg class="ico"><use href="#i-home"/></svg> القائمة الرئيسية</button>
+      </div>
+    </div>
+    <span class="story-cinematic-hint" id="storyCinematicHint">Enter أو المسافة للمتابعة • Esc للتخطي</span>
+  </div>
+
+  <!-- ═════════════════════════ LAUNCH NOTICES ═════════════════════════ -->
+  <div class="launch-layer" id="launchLayer" hidden>
+    <div class="launch-card" id="launchCard" role="dialog" aria-modal="true" aria-live="polite"></div>
+  </div>
+
   <audio id="musicMenu" preload="auto" loop>
     <source src="assets/audio/menu-theme.ogg" type="audio/ogg">
     <source src="assets/audio/menu-theme.mp3" type="audio/mpeg">
@@ -711,5 +854,7 @@
   <script src="js/audio.js"></script>
   <script src="js/app.js"></script>
   <script src="js/game.js"></script>
+  <script src="js/story.js"></script>
+  <script src="js/notices.js"></script>
 </body>
 </html>
